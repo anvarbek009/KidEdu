@@ -1,93 +1,74 @@
-# kidedu
+# 🦊 KidEdu - Bolalar uchun Quvnoq Ta'lim Olami (MVP)
 
+**KidEdu** — 5–10 yoshli bolalar uchun mo'ljallangan, interaktiv ertaknamo o'yin olami shaklidagi ta'lim platformasi.
 
+---
 
-## Getting started
+## 🌟 Asosiy Imkoniyatlar & Xususiyatlar
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### 🎨 1. Noyob Dizayn (Storybook / Game World)
+- **Ertaknamo dizayn tizimi**: Iliq qog'oz teksturasi (`#FDFBF7`, `#FAF5EC`), tabiiy gilli 3D tugmalar (`clay-btn`), to'lqinsimon chiziqlar va yumshoq tabiiy ranglar (terrakota, adaçayı yashili, quyoshli sariq, daryo ko'ki).
+- **Interaktiv Maskot "Doni"**: O'zbek tilida quvnoq gapiruvchi, his-tuyg'ularini namoyon qiluvchi (xursand, o'ychan, g'olib) va kiyimlarini almashtirish mumkin bo'lgan jonli hamroh.
+- **Sarguzasht Xaritasi**: Bolalar uchun zerikarli dashboard o'rniga sehrli orollar (Alifbo O'rmoni, Raqamlar Qasri, Sehrli Kitobxonlik, Yutuqlar Xazinasi va Kiyimlar Do'koni).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+---
 
-## Add your files
+### 🔤 2. O'zbek Alifbosi & Savodxonlik (Alifbo O'rmoni)
+- **29 ta O'zbek lotin harfi** (jumladan `Oʻ`, `Gʻ`, `Sh`, `Ch`, `Ng`).
+- **Ovozli talaffuz**: Web Speech API va Web Audio yordamida harf tovushlari va so'zlarni o'zbekcha o'qish.
+- **Interaktiv Harf Chizish / Yozish (Letter Tracing Canvas)**: Bolalar barmoq yoki sichqoncha bilan nuqtali andoza ustidan harflarni yozadi, xatolar tozalanadi va yulduzlar bilan taqdirlanadi.
+- **Topqir Quloq (Listening Quiz)**: Eshitilgan tovush va harfga mos rasmni topish viktorinasi.
+- **So'z Terish Konstruktori (Spelling Builder)**: Harf bloklarini to'g'ri tartibda terish orqali o'zbekcha so'zlarni yasash (Olma, Baliq, Gul, Non, Quyosh).
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+---
 
+### 🔢 3. Matematika Sarguzashti (Raqamlar Qasri)
+- **Yoshga moslashtirilgan o'quv dasturi**:
+  - **5–6 yosh**: 1–10 gacha meva va yulduzlarni barmoq bilan sanash, to'plamlarni taqqoslash ("Qaysi biri ko'p?"), oddiy ko'rgazmali qo'shish.
+  - **7–8 yosh**: 1–20 va 1–100 oralig'ida tezkor qo'shish/ayirish, sehrli bo'sh kataklar (`8 + ? = 15`), sonlar ketma-ketligi (`2, 4, 6, ?`).
+  - **9–10 yosh**: 2 dan 9 gacha ko'paytirish jadvali, bo'lish asoslari va o'zbekcha mantiqiy matnli masalalar.
+- **Interaktiv sanash maydoni**: Bolalar ekrandagi har bir mevani bosganda tovush chiqarib rangini o'zgartiradi.
+- **Combo streak & Fanfare**: Ketma-ket to'g'ri javoblar uchun olovli multiplikator va konfetti mushakbozligi.
+
+---
+
+### 📖 4. Sehrli Kitobxonlik (Ertaklar)
+- Bolalar uchun qiziqarli o'zbekcha ertaklar ("Quvnoq Ayiqcha va Asal", "Quyonvoy va Sehrli Sabzi", "Koinotga Uchgan Qushcha").
+- Matndagi so'zlarni alohida bosib talaffuzini eshitish imkoniyati.
+- Ertak so'ngida tushunish darajasini aniqlovchi interaktiv savollar.
+
+---
+
+### 🛡️ 5. Ota-Ona Nazorati & Himoya Qulfi (Parent Gate)
+- **Bolalardan himoyalangan qulf**: Matematik misol (`7 × 8 = ?`) yoki 4 xonali PIN-kod (Standart demo PIN: `1234`) orqali kirish.
+- **Batafsil Tahlil (Analytics)**: Umumiy o'rganish daqiqalari, fanlar bo'yicha aniqlik foizi (Matematika % vs Alifbo %), so'nggi darslar jurnali.
+- **Bolalar Profillarini Boshqarish**: Yangi bola qo'shish, yosh guruhini o'zgartirish, kunlik ekran vaqti chegarasini belgilash (15, 30, 45, 60 daqiqa yoki cheksiz).
+- **Zaxira & Eksport**: Barcha natijalarni JSON fayl ko'rinishida yuklab olish.
+
+---
+
+### 🏆 6. Geymifikatsiya & Do'kon
+- **XP, Darajalar & Olovli Kunlik Streak**: Har bir to'g'ri javob uchun XP va tangalar.
+- **10+ Maxsus Yutuq Medallari** (Birinchi Qadam, Hisobdon Mittivoy, Alifbo Kashfiyotchisi, Olovli Sayohatchi va h.k.).
+- **Doni Kiyimlar Do'koni**: Yig'ilgan yulduzli tangalarga Doni maskotiga somon shlyapa, sehrgar qalpog'i, dono ko'zoynak, sumka va qahramon plashini sotib olish va kiyintirish!
+
+---
+
+### 🖥️ 7. To'liq Ekran "O'rganish Rejimi" & Moslashuvchanlik
+- Brauzerning Fullscreen API integratsiyasi orqali chalg'ituvchi tugmalarsiz maxsus o'rganish muhiti.
+- Mobil qurilmalarda katta sensorli tugmalar, planshetlarda moslashuvchan grid va noutbuk/kompyuterlarda to'liq ekran keng formatli tartib.
+
+---
+
+## 🚀 Ishga Tushirish
+
+```bash
+# 1. Bog'liqliklarni o'rnatish
+npm install
+
+# 2. Dasturchi serverini ishga tushirish
+npm run dev
+
+# 3. Brauzerda ochish:
+# http://localhost:5173
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/qytenex-group/kidedu.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-* [Set up project integrations](https://gitlab.com/qytenex-group/kidedu/-/settings/integrations)
-
-## Collaborate with your team
-
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.

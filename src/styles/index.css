@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-bubble: 'Fredoka', cursive, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FAF5EC;
+  color: #3D2817;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background-image: radial-gradient(#E8DCC8 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom hand-drawn clay buttons */
+.clay-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-width: 3px;
+  border-color: #3D2817;
+  border-radius: 1.25rem;
+  box-shadow: 0 5px 0 0 #3D2817;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+.clay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 0 #3D2817;
+}
+
+.clay-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 0 #3D2817;
+}
+
+.clay-card {
+  background-color: #FFFFFF;
+  border: 3px solid #3D2817;
+  border-radius: 1.5rem;
+  box-shadow: 4px 6px 0 0 #3D2817;
+}
+
+.clay-card-sm {
+  background-color: #FFFFFF;
+  border: 2.5px solid #3D2817;
+  border-radius: 1.25rem;
+  box-shadow: 2px 4px 0 0 #3D2817;
+}
+
+.wobbly-box {
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F4EADA;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4AF92;
+  border: 2px solid #3D2817;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A99071;
+}
+
+/* Storybook paper texture overlays */
+.paper-pattern {
+  background-color: #FDFBF7;
+  background-image: radial-gradient(#D6C2A4 0.75px, transparent 0.75px);
+  background-size: 16px 16px;
+}
