@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .gemini
 .vercel
+*.db
+data/*.db
+scratch/

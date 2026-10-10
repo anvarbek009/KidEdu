@@ -9,7 +9,11 @@ import {
   Flame, 
   RotateCcw,
   Zap,
-  Play
+  Play,
+  Lock,
+  BookOpen,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { MATH_TOPICS, generateMathQuestions } from '../../data/mathData';
@@ -30,6 +34,7 @@ export default function MathAdventureView({
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [showHint, setShowHint] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [combo, setCombo] = useState(0);
   const [tappedCounters, setTappedCounters] = useState({});
@@ -47,12 +52,7 @@ export default function MathAdventureView({
     setCombo(0);
     setTappedCounters({});
 
-    // Speak prompt
-    if (generated[0]) {
-      setTimeout(() => {
-        audio.speakUzbek(generated[0].prompt);
-      }, 400);
-    }
+    // Voice is NOT played automatically - only when user presses speaker button
   };
 
   const currentQ = questions[currentIndex];
@@ -86,9 +86,6 @@ export default function MathAdventureView({
         setSelectedOption(null);
         setShowHint(false);
         setTappedCounters({});
-        if (questions[nextIdx]) {
-          audio.speakUzbek(questions[nextIdx].prompt);
-        }
       } else {
         // Finished Lesson!
         setIsFinished(true);
@@ -185,28 +182,49 @@ export default function MathAdventureView({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {availableTopics.map((t) => {
+            {availableTopics.map((t, idx) => {
               const isDone = activeChild?.completedLessons?.math?.includes(t.id);
+              const prevTopic = idx > 0 ? availableTopics[idx - 1] : null;
+              // Lesson 1 is always unlocked. Next lessons unlock step by step upon completing previous lesson.
+              const isUnlocked = idx === 0 || isDone || (prevTopic && activeChild?.completedLessons?.math?.includes(prevTopic.id));
 
               return (
                 <div
                   key={t.id}
-                  onClick={() => startTopicLesson(t)}
-                  className="group cursor-pointer bg-white hover:bg-paper-50 p-6 rounded-3xl border-3 border-clay-dark shadow-clay transition-all transform hover:-translate-y-1.5 flex flex-col justify-between"
+                  onClick={() => {
+                    if (!isUnlocked) {
+                      audio.playWrong();
+                      audio.speakUzbek("Bu dars hali qulflangan! Avvalgi darsni muvaffaqiyatli yakunlang.");
+                      return;
+                    }
+                    startTopicLesson(t);
+                  }}
+                  className={`group p-6 rounded-3xl border-3 border-clay-dark shadow-clay transition-all flex flex-col justify-between ${
+                    !isUnlocked 
+                      ? 'bg-paper-200/80 opacity-75 cursor-not-allowed border-dashed'
+                      : 'bg-white hover:bg-paper-50 cursor-pointer transform hover:-translate-y-1.5'
+                  }`}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <div
-                        className="w-16 h-16 rounded-2xl border-3 border-clay-dark flex items-center justify-center text-3xl shadow-clay-sm group-hover:rotate-6 transition-transform"
-                        style={{ backgroundColor: t.color }}
+                        className={`w-16 h-16 rounded-2xl border-3 border-clay-dark flex items-center justify-center text-3xl shadow-clay-sm transition-transform ${
+                          isUnlocked ? 'group-hover:rotate-6' : 'grayscale opacity-70'
+                        }`}
+                        style={{ backgroundColor: isUnlocked ? t.color : '#D8D4CC' }}
                       >
-                        {t.icon}
+                        {isUnlocked ? t.icon : '🔒'}
                       </div>
 
                       {isDone ? (
                         <span className="flex items-center gap-1 bg-sage text-white text-xs font-black px-2.5 py-1 rounded-xl border-2 border-clay-dark">
                           <CheckCircle size={13} />
                           <span>Bajarilgan</span>
+                        </span>
+                      ) : !isUnlocked ? (
+                        <span className="flex items-center gap-1 bg-paper-300 text-clay-dark/70 text-xs font-black px-2.5 py-1 rounded-xl border border-clay-dark/30">
+                          <Lock size={12} />
+                          <span>Qulflangan</span>
                         </span>
                       ) : (
                         <span className="text-xs bg-sunny-soft text-clay-dark font-black px-2.5 py-1 rounded-xl border border-clay-dark/30">
@@ -215,11 +233,13 @@ export default function MathAdventureView({
                       )}
                     </div>
 
-                    <h3 className="text-lg font-black text-clay-dark mb-1 group-hover:text-terracotta transition-colors">
+                    <h3 className={`text-lg font-black mb-1 transition-colors ${
+                      isUnlocked ? 'text-clay-dark group-hover:text-terracotta' : 'text-clay/60'
+                    }`}>
                       {t.title}
                     </h3>
                     <p className="text-xs text-clay/70 font-semibold leading-relaxed">
-                      {t.subtitle}
+                      {isUnlocked ? t.subtitle : `Oldingi "${prevTopic?.title || 'dars'}"ni yakunlab, ushbu bosqichni oching.`}
                     </p>
                   </div>
 
@@ -227,10 +247,17 @@ export default function MathAdventureView({
                     <span className="text-xs font-bold text-clay/60">
                       {t.questionsCount} ta savol
                     </span>
-                    <button className="clay-btn bg-sage text-white text-xs px-3 py-1.5 font-black flex items-center gap-1">
-                      <Play size={13} />
-                      <span>Boshlash</span>
-                    </button>
+                    {isUnlocked ? (
+                      <button className="clay-btn bg-sage text-white text-xs px-3 py-1.5 font-black flex items-center gap-1">
+                        <Play size={13} />
+                        <span>{isDone ? "Qayta O'ynash" : "Boshlash"}</span>
+                      </button>
+                    ) : (
+                      <span className="flex items-center gap-1 text-xs font-bold text-clay/60 bg-paper-300/80 px-2.5 py-1 rounded-xl border border-clay-dark/20">
+                        <Lock size={12} />
+                        <span>Kuting</span>
+                      </span>
+                    )}
                   </div>
                 </div>
               );
@@ -248,8 +275,72 @@ export default function MathAdventureView({
         </div>
       ) : !isFinished && currentQ ? (
         /* VIEW 2: ACTIVE QUESTION ARENA */
-        <div className="max-w-3xl mx-auto space-y-6">
+        <div className="max-w-3xl mx-auto space-y-5">
           
+          {/* Lesson Explanation & Step-by-Step Example Banner */}
+          {selectedTopic && (selectedTopic.explanation || selectedTopic.stepByStep) && (
+            <div className="bg-gradient-to-r from-sunny-soft via-paper-50 to-sage-soft border-3 border-clay-dark rounded-3xl p-4 sm:p-5 shadow-clay-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="p-2 bg-sunny text-clay-dark rounded-xl border border-clay-dark shadow-clay-sm text-lg">
+                    📖
+                  </span>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-black text-clay-dark flex items-center gap-2">
+                      <span>Dars Tushuntirishi & Namunasi</span>
+                      <span className="text-[11px] font-bold bg-white/80 px-2 py-0.5 rounded-lg border border-clay-dark/20 text-terracotta">
+                        {selectedTopic.title}
+                      </span>
+                    </h3>
+                    <p className="text-xs text-clay/70 font-semibold hidden sm:block">
+                      Masalani yechishdan oldin qoidani va namunani o'rganib oling!
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      audio.playPop();
+                      audio.speakUzbek(`${selectedTopic.title}. ${selectedTopic.explanation}. Masalan: ${selectedTopic.stepByStep}`);
+                    }}
+                    className="p-2 bg-sunny text-clay-dark hover:bg-sunny-dark rounded-xl border border-clay-dark shadow-clay-sm text-xs font-bold flex items-center gap-1 transition-all"
+                    title="Tushuntirishni ovozda eshitish"
+                  >
+                    <Volume2 size={15} />
+                    <span className="hidden sm:inline">Eshitish</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowExplanation(!showExplanation)}
+                    className="p-2 bg-white text-clay-dark rounded-xl border border-clay-dark shadow-clay-sm text-xs font-bold flex items-center gap-1"
+                    title={showExplanation ? "Yashirish" : "Ko'rsatish"}
+                  >
+                    {showExplanation ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+                  </button>
+                </div>
+              </div>
+
+              {showExplanation && (
+                <div className="space-y-2.5 pt-1 animate-pop-in">
+                  <div className="bg-white/90 p-3 rounded-2xl border border-clay-dark/30 text-xs sm:text-sm font-bold text-clay-dark leading-relaxed">
+                    💡 {selectedTopic.explanation}
+                  </div>
+
+                  {selectedTopic.stepByStep && (
+                    <div className="bg-paper-100 p-3 rounded-2xl border-2 border-clay-dark/40 flex items-start gap-2 text-xs sm:text-sm font-black text-terracotta-dark">
+                      <span className="text-base">📝</span>
+                      <div>
+                        <span className="text-clay/75 font-bold mr-1.5">Qadamma-qadam namuna:</span>
+                        <span>{selectedTopic.stepByStep}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Main Question Card */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border-4 border-clay-dark shadow-clay relative space-y-6">
             

@@ -146,12 +146,10 @@ export default function LetterTracingCanvas({
   const handleCheck = () => {
     if (strokePointsCount < 15) {
       audio.playWrong();
-      audio.speakUzbek("Iltimos, harfni to'liq chizib chiqing!");
       return;
     }
 
     audio.playLevelUp();
-    audio.speakUzbek(`Barakalla! "${letter}" harfini juda chiroyli yozdingiz!`);
     
     // Confetti blast
     try {

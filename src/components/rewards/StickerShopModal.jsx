@@ -20,12 +20,10 @@ export default function StickerShopModal({
   const handleBuyItem = (item) => {
     if (currentCoins < item.price) {
       audio.playWrong();
-      audio.speakUzbek("Yulduzli tangalaringiz yetarli emas. Darslarni bajarib tanga to'plang!");
       return;
     }
 
     audio.playLevelUp();
-    audio.speakUzbek(`Tabriklaymiz! "${item.name}" xarid qilindi!`);
 
     const newCoins = currentCoins - item.price;
     const newInventory = [...inventory, item.id];
@@ -73,7 +71,7 @@ export default function StickerShopModal({
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-black text-clay-dark">
-                Doni Kiyimlar Do'koni
+                KidEdu Kiyimlar Do'koni
               </h2>
               <div className="flex items-center gap-1 text-xs font-bold text-clay-dark">
                 <span>Mavjud tangalar:</span>

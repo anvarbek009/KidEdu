@@ -10,10 +10,11 @@ import {
   Headphones, 
   Puzzle, 
   BookOpen,
-  RotateCcw
+  RotateCcw,
+  Lock
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { UZBEK_ALPHABET } from '../../data/alphabetData';
+import { UZBEK_ALPHABET, READING_LESSONS, ALPHABET_LESSONS } from '../../data/alphabetData';
 import { audio } from '../../services/audioService';
 import LetterTracingCanvas from './LetterTracingCanvas';
 import MascotDoni from '../mascot/MascotDoni';
@@ -24,7 +25,12 @@ export default function AlphabetForestView({
   onLessonComplete
 }) {
   const [selectedLetter, setSelectedLetter] = useState(UZBEK_ALPHABET[0]);
-  const [mode, setMode] = useState('explore'); // 'explore', 'tracing', 'listening', 'spelling'
+  const [mode, setMode] = useState('explore'); // 'explore', 'reading', 'tracing', 'listening', 'spelling'
+  
+  // Reading Lessons 30-50 State
+  const [selectedReadingLesson, setSelectedReadingLesson] = useState(null);
+  const [readingQuizAnswer, setReadingQuizAnswer] = useState(null);
+  const [readingQuizDone, setReadingQuizDone] = useState(false);
   
   // Listening Quiz State
   const [quizIndex, setQuizIndex] = useState(0);
@@ -47,18 +53,9 @@ export default function AlphabetForestView({
   // Completed letters set for active child
   const completedLetters = activeChild?.completedLessons?.alphabet || [];
 
-  // Audio trigger
-  const playLetterAudio = (letterObj) => {
-    audio.playPop();
-    audio.speakLetter(letterObj.upper);
-    setTimeout(() => {
-      audio.speakUzbek(`${letterObj.word}. ${letterObj.exampleSentence}`);
-    }, 650);
-  };
-
   const handleSelectLetter = (item) => {
     setSelectedLetter(item);
-    playLetterAudio(item);
+    audio.playPop();
   };
 
   const handleTracingComplete = (letterItem) => {
@@ -158,7 +155,6 @@ export default function AlphabetForestView({
 
   const handlePickSpellingLetter = (char) => {
     audio.playPop();
-    audio.speakLetter(char);
     const updated = [...assembledLetters, char];
     setAssembledLetters(updated);
 
@@ -167,7 +163,6 @@ export default function AlphabetForestView({
       const spelledWord = updated.join('');
       if (spelledWord === currentSpelling.word) {
         audio.playCorrect();
-        audio.speakUzbek(`Barakalla! "${currentSpelling.word}" so'zini to'g'ri terdingiz!`);
         try { confetti({ particleCount: 50, spread: 60 }); } catch (e) {}
 
         setTimeout(() => {
@@ -189,7 +184,6 @@ export default function AlphabetForestView({
         }, 1500);
       } else {
         audio.playWrong();
-        audio.speakUzbek("Qaytadan urinib ko'ring!");
         setTimeout(() => setAssembledLetters([]), 1000);
       }
     }
@@ -232,13 +226,13 @@ export default function AlphabetForestView({
               <h1 className="text-xl sm:text-2xl font-black text-clay-dark">Alifbo O'rmoni</h1>
             </div>
             <p className="text-xs text-clay/80 font-bold hidden sm:block">
-              29 ta O'zbek lotin harfi, talaffuzi va qiziqarli o'yinlar
+              50 ta O'zbek alifbosi, bo'g'inlar, so'zlar va o'qish darslari
             </p>
           </div>
         </div>
 
         {/* Game Mode Switcher Tabs */}
-        <div className="flex gap-1.5 bg-paper-200 p-1.5 border-2 border-clay-dark rounded-2xl">
+        <div className="flex flex-wrap gap-1.5 bg-paper-200 p-1.5 border-2 border-clay-dark rounded-2xl">
           <button
             onClick={() => {
               audio.playPop();
@@ -251,7 +245,25 @@ export default function AlphabetForestView({
             }`}
           >
             <BookOpen size={14} />
-            <span>Harflar</span>
+            <span>Harflar (1-29)</span>
+          </button>
+
+          <button
+            onClick={() => {
+              audio.playPop();
+              setMode('reading');
+              setSelectedReadingLesson(null);
+              setReadingQuizAnswer(null);
+              setReadingQuizDone(false);
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs font-black border-2 transition-all flex items-center gap-1.5 ${
+              mode === 'reading'
+                ? 'bg-sunny text-clay-dark border-clay-dark shadow-clay-sm scale-105'
+                : 'border-transparent text-clay/70 hover:text-clay-dark'
+            }`}
+          >
+            <Sparkles size={14} />
+            <span>Bo'g'in & O'qish (30-50)</span>
           </button>
 
           <button
@@ -314,31 +326,49 @@ export default function AlphabetForestView({
 
             {/* 29 Letters Grid */}
             <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 gap-2.5">
-              {UZBEK_ALPHABET.map((item) => {
+              {UZBEK_ALPHABET.map((item, idx) => {
                 const isSelected = selectedLetter.id === item.id;
                 const isCompleted = completedLetters.includes(item.id);
+                const prevLetter = idx > 0 ? UZBEK_ALPHABET[idx - 1] : null;
+                // Letter 1 ('A') is always unlocked. Next letters unlock step by step upon completing previous letter.
+                const isUnlocked = idx === 0 || isCompleted || (prevLetter && completedLetters.includes(prevLetter.id));
 
                 return (
                   <button
                     key={item.id}
-                    onClick={() => handleSelectLetter(item)}
-                    className={`relative p-2 rounded-2xl border-2.5 border-clay-dark transition-all flex flex-col items-center justify-center transform hover:-translate-y-1 ${
-                      isSelected
-                        ? 'bg-sunny text-clay-dark shadow-clay scale-105 ring-2 ring-terracotta'
-                        : 'bg-paper-50 hover:bg-paper-100 shadow-clay-sm'
+                    onClick={() => {
+                      if (!isUnlocked) {
+                        audio.playWrong();
+                        audio.speakUzbek("Bu harf hali qulflangan! Avval oldingi harfni o'rganing va chizing.");
+                        return;
+                      }
+                      handleSelectLetter(item);
+                    }}
+                    className={`relative p-2 rounded-2xl border-2.5 border-clay-dark transition-all flex flex-col items-center justify-center ${
+                      !isUnlocked
+                        ? 'bg-paper-200/60 opacity-60 cursor-not-allowed border-dashed'
+                        : isSelected
+                        ? 'bg-sunny text-clay-dark shadow-clay scale-105 ring-2 ring-terracotta transform -translate-y-1'
+                        : 'bg-paper-50 hover:bg-paper-100 shadow-clay-sm transform hover:-translate-y-1'
                     }`}
                   >
                     <div className="text-lg sm:text-xl font-black leading-none">
                       {item.upper} <span className="text-sm opacity-80">{item.lower}</span>
                     </div>
-                    <div className="text-base sm:text-lg mt-1">{item.emoji}</div>
+                    <div className="text-base sm:text-lg mt-1">
+                      {isUnlocked ? item.emoji : '🔒'}
+                    </div>
                     
-                    {/* Tiny Checkmark if completed */}
-                    {isCompleted && (
+                    {/* Status badge: Checkmark if completed, Lock if locked */}
+                    {isCompleted ? (
                       <div className="absolute -top-1 -right-1 bg-sage text-white rounded-full p-0.5 border border-clay-dark">
                         <CheckCircle2 size={10} />
                       </div>
-                    )}
+                    ) : !isUnlocked ? (
+                      <div className="absolute -top-1 -right-1 bg-paper-300 text-clay-dark rounded-full p-0.5 border border-clay-dark/40">
+                        <Lock size={10} />
+                      </div>
+                    ) : null}
                   </button>
                 );
               })}
@@ -436,6 +466,343 @@ export default function AlphabetForestView({
 
           </div>
 
+        </div>
+      )}
+
+      {/* MODE: READING & SYLLABLES (LESSONS 30-50) */}
+      {mode === 'reading' && (
+        <div className="space-y-6">
+          {!selectedReadingLesson ? (
+            /* Shelf of Lessons 30-50 */
+            <div className="space-y-6">
+              <div className="text-center max-w-lg mx-auto">
+                <h2 className="text-2xl font-black text-clay-dark">Bo'g'inlar va O'qish Darslari</h2>
+                <p className="text-xs text-clay/80 font-semibold mt-1">
+                  21 ta bosqichma-bosqich o'qish darsi: bo'g'inlardan so'zlar, so'zlardan to'liq gaplar tuzishni birga o'rganamiz!
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {READING_LESSONS.map((rLesson, idx) => {
+                  const isDone = completedLetters.includes(rLesson.id);
+                  const prevLesson = idx > 0 ? READING_LESSONS[idx - 1] : null;
+                  const isUnlocked = idx === 0 || isDone || (prevLesson && completedLetters.includes(prevLesson.id));
+
+                  return (
+                    <div
+                      key={rLesson.id}
+                      onClick={() => {
+                        if (!isUnlocked) {
+                          audio.playWrong();
+                          audio.speakUzbek("Bu dars hali qulflangan! Avvalgi darsni muvaffaqiyatli yakunlang.");
+                          return;
+                        }
+                        audio.playPop();
+                        setSelectedReadingLesson(rLesson);
+                        setReadingQuizAnswer(null);
+                        setReadingQuizDone(false);
+                      }}
+                      className={`group p-5 rounded-3xl border-3 border-clay-dark shadow-clay transition-all flex flex-col justify-between ${
+                        !isUnlocked
+                          ? 'bg-paper-200/80 opacity-75 cursor-not-allowed border-dashed'
+                          : 'bg-white hover:bg-paper-50 cursor-pointer transform hover:-translate-y-1.5'
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <div
+                            className="w-14 h-14 rounded-2xl border-2 border-clay-dark flex items-center justify-center text-3xl shadow-clay-sm transition-transform group-hover:rotate-6"
+                            style={{ backgroundColor: isUnlocked ? rLesson.color : '#D8D4CC' }}
+                          >
+                            {isUnlocked ? rLesson.icon : '🔒'}
+                          </div>
+
+                          {isDone ? (
+                            <span className="flex items-center gap-1 bg-sage text-white text-xs font-black px-2.5 py-1 rounded-xl border-2 border-clay-dark">
+                              <CheckCircle2 size={13} />
+                              <span>O'rganildi</span>
+                            </span>
+                          ) : !isUnlocked ? (
+                            <span className="flex items-center gap-1 bg-paper-300 text-clay-dark/70 text-xs font-black px-2.5 py-1 rounded-xl border border-clay-dark/30">
+                              <Lock size={12} />
+                              <span>Qulflangan</span>
+                            </span>
+                          ) : (
+                            <span className="text-xs bg-sunny-soft text-clay-dark font-black px-2.5 py-1 rounded-xl border border-clay-dark/30">
+                              +{rLesson.quiz.rewardXp} XP
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="text-[10px] font-black uppercase text-terracotta tracking-wider">
+                          {rLesson.lessonNumber}-dars • {rLesson.category}
+                        </div>
+                        <h3 className="text-base font-black text-clay-dark mt-0.5 mb-1 group-hover:text-terracotta transition-colors">
+                          {rLesson.title}
+                        </h3>
+                        <p className="text-xs text-clay/70 font-semibold line-clamp-2">
+                          {isUnlocked ? rLesson.explanation : `Oldingi "${prevLesson?.title || 'dars'}"ni yakunlab, ushbu darsni oching.`}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 mt-3 border-t-2 border-paper-200 flex items-center justify-between">
+                        <span className="text-[11px] font-bold text-clay/60">
+                          {rLesson.items.length} ta amaliy mashq
+                        </span>
+                        {isUnlocked && (
+                          <button className="clay-btn bg-sage text-white text-xs px-3 py-1 font-black flex items-center gap-1">
+                            <Play size={12} />
+                            <span>{isDone ? "Qayta O'qish" : "Boshlash"}</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            /* Active Reading Lesson View */
+            <div className="max-w-3xl mx-auto space-y-6">
+              
+              {/* Back to reading shelf */}
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => {
+                    audio.playPop();
+                    setSelectedReadingLesson(null);
+                  }}
+                  className="clay-btn bg-paper-200 text-clay-dark text-xs px-3 py-2 flex items-center gap-1.5 font-bold"
+                >
+                  <ArrowLeft size={16} />
+                  <span>Darslar Tokchasiga Qaytish</span>
+                </button>
+
+                <span className="text-xs font-black bg-sunny-soft text-clay-dark px-3 py-1 rounded-xl border border-clay-dark/30">
+                  {selectedReadingLesson.lessonNumber}-dars: {selectedReadingLesson.category}
+                </span>
+              </div>
+
+              {/* Lesson Main Card */}
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border-4 border-clay-dark shadow-clay space-y-6">
+                
+                {/* Header */}
+                <div className="flex items-center gap-4 bg-paper-50 p-4 rounded-2xl border-2 border-clay-dark">
+                  <div
+                    className="w-16 h-16 rounded-2xl border-3 border-clay-dark flex items-center justify-center text-3xl shadow-clay-sm"
+                    style={{ backgroundColor: selectedReadingLesson.color }}
+                  >
+                    {selectedReadingLesson.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-xl sm:text-2xl font-black text-clay-dark">
+                      {selectedReadingLesson.title}
+                    </h2>
+                    <p className="text-xs font-bold text-clay/70 mt-0.5">
+                      Kategoriya: <strong className="text-terracotta">{selectedReadingLesson.category}</strong> • Mukofot: +{selectedReadingLesson.quiz.rewardXp} XP
+                    </p>
+                  </div>
+                </div>
+
+                {/* Explanation Card */}
+                <div className="bg-gradient-to-r from-sunny-soft via-paper-50 to-sage-soft p-4 rounded-2xl border-2 border-clay-dark space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-clay-dark uppercase flex items-center gap-1.5">
+                      <span>💡 Dars Tushuntirishi:</span>
+                    </span>
+                    <button
+                      onClick={() => {
+                        audio.playPop();
+                        audio.speakUzbek(`${selectedReadingLesson.title}. ${selectedReadingLesson.explanation}`);
+                      }}
+                      className="p-1.5 bg-sunny text-clay-dark rounded-xl border border-clay-dark shadow-clay-sm text-xs font-bold flex items-center gap-1"
+                      title="Ovozda eshitish"
+                    >
+                      <Volume2 size={14} />
+                      <span>Eshitish</span>
+                    </button>
+                  </div>
+                  <p className="text-xs sm:text-sm font-bold text-clay-dark leading-relaxed">
+                    {selectedReadingLesson.explanation}
+                  </p>
+                </div>
+
+                {/* Step-by-Step Example Card */}
+                {selectedReadingLesson.stepByStep && (
+                  <div className="bg-paper-100 p-4 rounded-2xl border-2 border-clay-dark/40 flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="text-xs font-black text-terracotta flex items-center gap-1">
+                        <span>📝 Qadamma-qadam namuna:</span>
+                      </div>
+                      <div className="text-xs sm:text-sm font-black text-clay-dark">
+                        {selectedReadingLesson.stepByStep}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        audio.playPop();
+                        audio.speakUzbek(`Namunani tinglang: ${selectedReadingLesson.stepByStep}`);
+                      }}
+                      className="p-1.5 bg-paper-200 hover:bg-paper-300 text-clay-dark rounded-xl border border-clay-dark shadow-clay-sm text-xs font-bold flex items-center gap-1 flex-shrink-0"
+                      title="Namunani ovozda eshitish"
+                    >
+                      <Volume2 size={14} />
+                    </button>
+                  </div>
+                )}
+
+                {/* Interactive Practice Cards Grid */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-black text-clay-dark flex items-center justify-between">
+                    <span>O'qish va Talaffuz Mashqlari:</span>
+                    <span className="text-xs text-clay/70 font-semibold">(Har birini bosib ovozini tinglang 🔊)</span>
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {selectedReadingLesson.items.map((it, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-paper-50 hover:bg-paper-100 p-3.5 rounded-2xl border-2 border-clay-dark shadow-clay-sm flex items-center justify-between gap-3 transition-all"
+                      >
+                        <div>
+                          <div className="text-lg sm:text-xl font-black text-clay-dark">
+                            {it.text}
+                          </div>
+                          <div className="text-xs font-bold text-terracotta">
+                            {it.helper}
+                          </div>
+                          {it.example && (
+                            <div className="text-[11px] font-semibold text-clay/70 mt-0.5">
+                              Masalan: {it.example}
+                            </div>
+                          )}
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            audio.playPop();
+                            audio.speakUzbek(it.audioText || it.text);
+                          }}
+                          className="p-2.5 bg-sunny hover:bg-sunny-dark text-clay-dark rounded-xl border-2 border-clay-dark shadow-clay-sm hover:scale-105 active:scale-95 transition-all flex-shrink-0"
+                          title="Talaffuzni eshitish"
+                        >
+                          <Volume2 size={18} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Comprehension Quiz Card */}
+                <div className="bg-paper-100 p-5 rounded-2xl border-3 border-clay-dark space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-terracotta uppercase tracking-wide">
+                      Bilim Sinovi & Qabul:
+                    </span>
+                    <button
+                      onClick={() => {
+                        audio.playPop();
+                        audio.speakUzbek(selectedReadingLesson.quiz.prompt);
+                      }}
+                      className="p-1 bg-sunny text-clay-dark rounded-lg border border-clay-dark text-xs font-bold flex items-center gap-1"
+                      title="Savolni eshitish"
+                    >
+                      <Volume2 size={13} />
+                      <span className="text-[11px]">Savolni eshitish</span>
+                    </button>
+                  </div>
+
+                  <h4 className="text-base sm:text-lg font-black text-clay-dark text-center">
+                    {selectedReadingLesson.quiz.prompt}
+                  </h4>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {selectedReadingLesson.quiz.options.map((opt, optIdx) => {
+                      const isSelected = readingQuizAnswer === optIdx;
+                      let btnBg = 'bg-white hover:bg-paper-200 text-clay-dark';
+                      if (isSelected) {
+                        btnBg = opt.correct ? 'bg-sage text-white' : 'bg-terracotta text-white';
+                      }
+
+                      return (
+                        <button
+                          key={optIdx}
+                          disabled={readingQuizDone}
+                          onClick={() => {
+                            if (readingQuizAnswer !== null) return;
+                            setReadingQuizAnswer(optIdx);
+
+                            if (opt.correct) {
+                              audio.playCorrect();
+                              try {
+                                confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+                              } catch (e) {}
+                              setReadingQuizDone(true);
+                              onLessonComplete({
+                                subject: 'alifbo',
+                                topic: selectedReadingLesson.title,
+                                score: 1,
+                                total: 1,
+                                xpEarned: selectedReadingLesson.quiz.rewardXp,
+                                completedId: selectedReadingLesson.id
+                              });
+                            } else {
+                              audio.playWrong();
+                              setTimeout(() => setReadingQuizAnswer(null), 1200);
+                            }
+                          }}
+                          className={`clay-btn ${btnBg} py-3 px-4 font-black text-sm border-2 transition-all text-center`}
+                        >
+                          {opt.text}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {readingQuizDone && (
+                    <div className="bg-sage-soft p-4 rounded-xl border-2 border-sage text-center space-y-3 animate-pop-in">
+                      <div className="text-sm font-black text-sage-dark flex items-center justify-center gap-2">
+                        <CheckCircle2 size={18} />
+                        <span>Ajoyib! Dars muvaffaqiyatli yakunlandi! +{selectedReadingLesson.quiz.rewardXp} XP</span>
+                      </div>
+                      <div className="flex justify-center gap-2">
+                        {(() => {
+                          const currIdx = READING_LESSONS.findIndex(r => r.id === selectedReadingLesson.id);
+                          const nextLesson = currIdx + 1 < READING_LESSONS.length ? READING_LESSONS[currIdx + 1] : null;
+
+                          return nextLesson ? (
+                            <button
+                              onClick={() => {
+                                audio.playPop();
+                                setSelectedReadingLesson(nextLesson);
+                                setReadingQuizAnswer(null);
+                                setReadingQuizDone(false);
+                              }}
+                              className="clay-btn bg-sage text-white text-xs px-4 py-2 font-black flex items-center gap-1.5"
+                            >
+                              <span>Keyingi Darsga O'tish ({nextLesson.lessonNumber}-dars)</span>
+                              <Play size={14} />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                audio.playPop();
+                                setSelectedReadingLesson(null);
+                              }}
+                              className="clay-btn bg-sage text-white text-xs px-4 py-2 font-black"
+                            >
+                              Barcha Darslarga Qaytish
+                            </button>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          )}
         </div>
       )}
 

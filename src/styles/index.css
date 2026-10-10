@@ -14,8 +14,13 @@ body {
   font-family: 'Fredoka', system-ui, sans-serif;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
   background-image: radial-gradient(#E8DCC8 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+button, a, input, select {
+  touch-action: manipulation;
 }
 
 /* Custom hand-drawn clay buttons */

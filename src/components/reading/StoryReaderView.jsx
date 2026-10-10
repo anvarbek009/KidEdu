@@ -7,7 +7,8 @@ import {
   BookOpen,
   CheckCircle,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  Lock
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { SHORT_STORIES } from '../../data/storiesData';
@@ -24,6 +25,9 @@ export default function StoryReaderView({
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswer, setQuizAnswer] = useState(null);
   const [quizDone, setQuizDone] = useState(false);
+  const [filterAge, setFilterAge] = useState('all');
+
+  const filteredStories = SHORT_STORIES.filter(s => filterAge === 'all' || s.ageGroup === filterAge);
 
   const startStory = (story) => {
     audio.playPop();
@@ -32,13 +36,7 @@ export default function StoryReaderView({
     setShowQuiz(false);
     setQuizAnswer(null);
     setQuizDone(false);
-
-    // Speak initial page text
-    if (story.pages[0]) {
-      setTimeout(() => {
-        audio.speakUzbek(story.pages[0].text);
-      }, 300);
-    }
+    // Voice is NOT played automatically - only when user presses speaker button
   };
 
   const handleNextPage = () => {
@@ -46,10 +44,8 @@ export default function StoryReaderView({
     if (currentPage + 1 < selectedStory.pages.length) {
       const nextPage = currentPage + 1;
       setCurrentPage(nextPage);
-      audio.speakUzbek(selectedStory.pages[nextPage].text);
     } else {
       setShowQuiz(true);
-      audio.speakUzbek(selectedStory.quiz.question);
     }
   };
 
@@ -58,7 +54,6 @@ export default function StoryReaderView({
     if (currentPage > 0) {
       const prevPage = currentPage - 1;
       setCurrentPage(prevPage);
-      audio.speakUzbek(selectedStory.pages[prevPage].text);
     }
   };
 
@@ -70,7 +65,6 @@ export default function StoryReaderView({
 
     if (isCorrect) {
       audio.playCorrect();
-      audio.speakUzbek("To'g'ri! Siz ertakni juda diqqat bilan o'qidingiz!");
       try {
         confetti({
           particleCount: 70,
@@ -80,7 +74,6 @@ export default function StoryReaderView({
       } catch (e) { }
     } else {
       audio.playWrong();
-      audio.speakUzbek("Qaytadan o'ylab ko'ring!");
     }
 
     setTimeout(() => {
@@ -141,31 +134,77 @@ export default function StoryReaderView({
           <div className="text-center max-w-lg mx-auto">
             <h2 className="text-2xl font-black text-clay-dark">Ertaklar Tokchasi</h2>
             <p className="text-xs text-clay/80 font-semibold mt-1">
-              Birgalikda o'qiymiz, yangi so'zlarni o'rganamiz va qahramonlar bilan do'stlashamiz!
+              50 ta qiziqarli o'zbek ertaklari: birgalikda o'qiymiz, yangi so'zlarni o'rganamiz va qahramonlar bilan do'stlashamiz!
             </p>
+
+            {/* Age Filter Tabs */}
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
+              {[
+                { id: 'all', label: `Barchasi (${SHORT_STORIES.length} ta)` },
+                { id: '5-6', label: '5-6 yosh' },
+                { id: '7-8', label: '7-8 yosh' },
+                { id: '9-10', label: '9-10 yosh' }
+              ].map(f => (
+                <button
+                  key={f.id}
+                  onClick={() => {
+                    audio.playPop();
+                    setFilterAge(f.id);
+                  }}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-black border-2 transition-all ${
+                    filterAge === f.id
+                      ? 'bg-sunny text-clay-dark border-clay-dark shadow-clay-sm scale-105'
+                      : 'bg-paper-100 text-clay/70 border-clay-dark/30 hover:bg-paper-200'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SHORT_STORIES.map((story) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredStories.map((story) => {
+              const fullIdx = SHORT_STORIES.findIndex(s => s.id === story.id);
               const isDone = activeChild?.completedLessons?.stories?.includes(story.id);
+              const prevStory = fullIdx > 0 ? SHORT_STORIES[fullIdx - 1] : null;
+              const isUnlocked = fullIdx === 0 || isDone || (prevStory && activeChild?.completedLessons?.stories?.includes(prevStory.id));
 
               return (
                 <div
                   key={story.id}
-                  onClick={() => startStory(story)}
-                  className="group cursor-pointer bg-white hover:bg-paper-50 p-6 rounded-3xl border-3 border-clay-dark shadow-clay transition-all transform hover:-translate-y-2 flex flex-col justify-between"
-                  style={{ borderTopColor: story.themeColor, borderTopWidth: '8px' }}
+                  onClick={() => {
+                    if (!isUnlocked) {
+                      audio.playWrong();
+                      audio.speakUzbek("Bu ertak hali qulflangan! Avval oldingi ertakni o'qib chiqing.");
+                      return;
+                    }
+                    startStory(story);
+                  }}
+                  className={`group p-6 rounded-3xl border-3 border-clay-dark shadow-clay transition-all flex flex-col justify-between ${
+                    !isUnlocked
+                      ? 'bg-paper-200/80 opacity-75 cursor-not-allowed border-dashed'
+                      : 'bg-white hover:bg-paper-50 cursor-pointer transform hover:-translate-y-2'
+                  }`}
+                  style={{ borderTopColor: isUnlocked ? story.themeColor : '#A0988A', borderTopWidth: '8px' }}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-4xl bg-paper-100 p-3 rounded-2xl border-2 border-clay-dark group-hover:rotate-6 transition-transform">
-                        {story.icon}
+                      <span className={`text-4xl bg-paper-100 p-3 rounded-2xl border-2 border-clay-dark transition-transform ${
+                        isUnlocked ? 'group-hover:rotate-6' : 'grayscale opacity-70'
+                      }`}>
+                        {isUnlocked ? story.icon : '🔒'}
                       </span>
 
                       {isDone ? (
                         <span className="flex items-center gap-1 bg-sage text-white text-xs font-black px-2.5 py-1 rounded-xl border-2 border-clay-dark">
                           <CheckCircle size={13} />
                           <span>O'qilgan</span>
+                        </span>
+                      ) : !isUnlocked ? (
+                        <span className="flex items-center gap-1 bg-paper-300 text-clay-dark/70 text-xs font-black px-2.5 py-1 rounded-xl border border-clay-dark/30">
+                          <Lock size={12} />
+                          <span>Qulflangan</span>
                         </span>
                       ) : (
                         <span className="text-xs bg-sunny-soft text-clay-dark font-black px-2.5 py-1 rounded-xl border border-clay-dark/30">
@@ -174,11 +213,13 @@ export default function StoryReaderView({
                       )}
                     </div>
 
-                    <h3 className="text-lg font-black text-clay-dark mb-1 group-hover:text-terracotta transition-colors">
+                    <h3 className={`text-lg font-black mb-1 transition-colors ${
+                      isUnlocked ? 'text-clay-dark group-hover:text-terracotta' : 'text-clay/60'
+                    }`}>
                       {story.title}
                     </h3>
                     <p className="text-xs text-clay/70 font-semibold leading-relaxed">
-                      {story.description}
+                      {isUnlocked ? story.description : `Oldingi "${prevStory?.title || 'ertak'}"ni o'qib, ushbu ertakni oching.`}
                     </p>
                   </div>
 
@@ -186,10 +227,17 @@ export default function StoryReaderView({
                     <span className="text-xs bg-skywood/30 text-clay-dark font-bold px-2 py-0.5 rounded-lg">
                       {story.ageGroup} yosh
                     </span>
-                    <button className="clay-btn bg-sage text-white text-xs px-3 py-1.5 font-black flex items-center gap-1">
-                      <BookOpen size={13} />
-                      <span>O'qish</span>
-                    </button>
+                    {isUnlocked ? (
+                      <button className="clay-btn bg-sage text-white text-xs px-3 py-1.5 font-black flex items-center gap-1">
+                        <BookOpen size={13} />
+                        <span>{isDone ? "Qayta O'qish" : "O'qish"}</span>
+                      </button>
+                    ) : (
+                      <span className="flex items-center gap-1 text-xs font-bold text-clay/60 bg-paper-300/80 px-2.5 py-1 rounded-xl border border-clay-dark/20">
+                        <Lock size={12} />
+                        <span>Kuting</span>
+                      </span>
+                    )}
                   </div>
                 </div>
               );

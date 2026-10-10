@@ -1,137 +1,199 @@
-// KidEdu LocalStorage persistence service
+// KidEdu Persistent Storage & Backend Sync Service with 15-Day Inactivity Session Rule
 
 const STORAGE_KEYS = {
-  PARENT_AUTH: 'kidedu_parent_auth',
+  AUTH_TOKEN: 'kidedu_auth_token',
+  CURRENT_USER: 'kidedu_current_user',
   CHILD_PROFILES: 'kidedu_child_profiles',
   ACTIVE_CHILD_ID: 'kidedu_active_child_id',
   LEARNING_LOGS: 'kidedu_learning_logs',
-  SETTINGS: 'kidedu_settings',
+  SESSION_EXPIRES_AT: 'kidedu_session_expires_at',
+  LAST_ACTIVE_TIME: 'kidedu_last_active_time',
 };
 
-// Seed initial demo data for smooth first-time experience
-const DEFAULT_PARENT = {
-  id: 'parent_1',
-  name: 'Ota-Ona',
-  email: 'otaona@kidedu.uz',
-  pin: '1234',
-  isLoggedIn: false,
-};
-
-const DEFAULT_CHILDREN = [
-  {
-    id: 'child_1',
-    name: 'Azizbek',
-    ageGroup: '7-8', // '5-6', '7-8', '9-10'
-    avatar: '🦊',
-    mascotName: 'Doni',
-    xp: 280,
-    level: 2,
-    coins: 45,
-    streak: 3,
-    lastActiveDate: new Date().toISOString().split('T')[0],
-    unlockedBadges: ['first_step', 'math_star_1', 'abc_starter'],
-    equippedCostume: { hat: 'straw_hat', accessory: 'explorer_bag' },
-    inventory: ['straw_hat', 'explorer_bag'],
-    completedLessons: {
-      math: ['count_1', 'add_1'],
-      alphabet: ['A', 'B', 'D', 'E'],
-      stories: ['story_1'],
-    },
-    dailyTimeLimitMinutes: 30,
-  },
-  {
-    id: 'child_2',
-    name: 'Madinabonu',
-    ageGroup: '5-6',
-    avatar: '🐰',
-    mascotName: 'Quyonvoy',
-    xp: 90,
-    level: 1,
-    coins: 20,
-    streak: 1,
-    lastActiveDate: new Date().toISOString().split('T')[0],
-    unlockedBadges: ['first_step'],
-    equippedCostume: { hat: null, accessory: null },
-    inventory: [],
-    completedLessons: {
-      math: ['count_1'],
-      alphabet: ['A'],
-      stories: [],
-    },
-    dailyTimeLimitMinutes: 20,
-  }
-];
-
-const DEFAULT_LOGS = [
-  {
-    id: 'log_1',
-    childId: 'child_1',
-    subject: 'matematika',
-    topic: 'Qo\'shish va Ayirish (1-20)',
-    score: 9,
-    total: 10,
-    xpEarned: 50,
-    durationSeconds: 180,
-    timestamp: new Date(Date.now() - 3600000 * 2).toISOString(),
-  },
-  {
-    id: 'log_2',
-    childId: 'child_1',
-    subject: 'alifbo',
-    topic: 'O\'zbek Alifbosi (A, B, D, E)',
-    score: 8,
-    total: 8,
-    xpEarned: 60,
-    durationSeconds: 240,
-    timestamp: new Date(Date.now() - 3600000 * 18).toISOString(),
-  },
-  {
-    id: 'log_3',
-    childId: 'child_1',
-    subject: 'o\'qish',
-    topic: 'Ertak: Quvnoq Ayiqcha',
-    score: 5,
-    total: 5,
-    xpEarned: 40,
-    durationSeconds: 300,
-    timestamp: new Date(Date.now() - 3600000 * 26).toISOString(),
-  },
-];
+// 15 days in milliseconds
+export const FIFTEEN_DAYS_MS = 15 * 24 * 60 * 60 * 1000;
 
 export const storageService = {
-  // Parent Auth
-  getParentAuth() {
-    const raw = localStorage.getItem(STORAGE_KEYS.PARENT_AUTH);
-    if (!raw) {
-      this.saveParentAuth(DEFAULT_PARENT);
-      return DEFAULT_PARENT;
-    }
-    return JSON.parse(raw);
+  // Authentication & Session Token
+  getToken() {
+    return localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || null;
   },
 
-  saveParentAuth(authData) {
-    localStorage.setItem(STORAGE_KEYS.PARENT_AUTH, JSON.stringify(authData));
+  setToken(token) {
+    if (token) {
+      localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+    }
+  },
+
+  getCurrentUser() {
+    const raw = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+    return raw ? JSON.parse(raw) : null;
+  },
+
+  setCurrentUser(user) {
+    if (user) {
+      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    }
+  },
+
+  getSessionInfo() {
+    const expiresAt = Number(localStorage.getItem(STORAGE_KEYS.SESSION_EXPIRES_AT)) || 0;
+    const lastActive = Number(localStorage.getItem(STORAGE_KEYS.LAST_ACTIVE_TIME)) || 0;
+    return { expiresAt, lastActive };
+  },
+
+  updateSessionActivity() {
+    const now = Date.now();
+    localStorage.setItem(STORAGE_KEYS.LAST_ACTIVE_TIME, String(now));
+    localStorage.setItem(STORAGE_KEYS.SESSION_EXPIRES_AT, String(now + FIFTEEN_DAYS_MS));
   },
 
   isUserAuthenticated() {
-    const auth = this.getParentAuth();
-    return !!(auth && auth.isLoggedIn);
+    const token = this.getToken();
+    if (!token) return false;
+
+    // Check 15 days inactivity locally
+    const lastActive = Number(localStorage.getItem(STORAGE_KEYS.LAST_ACTIVE_TIME)) || 0;
+    const now = Date.now();
+    if (lastActive && (now - lastActive > FIFTEEN_DAYS_MS)) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  },
+
+  // API Client Helper
+  async apiRequest(endpoint, options = {}) {
+    const token = this.getToken();
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(options.headers || {})
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        ...options,
+        headers
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      // Session expired check (15 days inactivity from backend)
+      if (response.status === 401) {
+        if (data.expired || token) {
+          this.logout();
+        }
+        throw new Error(data.error || 'Avtorizatsiya talab qilinadi');
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Serverda xatolik yuz berdi");
+      }
+
+      this.updateSessionActivity();
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  },
+
+  // Auth Operations
+  async login({ email, pin, password }) {
+    const data = await this.apiRequest('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, pin, password })
+    });
+
+    this.setToken(data.token);
+    this.setCurrentUser(data.user);
+    this.saveChildren(data.children || []);
+    if (data.activeChildId) {
+      this.setActiveChildId(data.activeChildId);
+    }
+    this.updateSessionActivity();
+    return data;
+  },
+
+  async register({ name, email, pin, password, childName, childAgeGroup, childAvatar, childMascot }) {
+    const data = await this.apiRequest('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        email,
+        pin,
+        password,
+        childName,
+        childAgeGroup,
+        childAvatar,
+        childMascot
+      })
+    });
+
+    this.setToken(data.token);
+    this.setCurrentUser(data.user);
+    this.saveChildren(data.children || []);
+    if (data.activeChildId) {
+      this.setActiveChildId(data.activeChildId);
+    }
+    this.updateSessionActivity();
+    return data;
+  },
+
+  async checkServerSession() {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const data = await this.apiRequest('/api/auth/me', { method: 'GET' });
+      if (data && data.user) {
+        this.setCurrentUser(data.user);
+        this.saveChildren(data.children || []);
+        this.updateSessionActivity();
+        return data;
+      }
+      return null;
+    } catch (err) {
+      // If expired, clear
+      if (err.message.includes('15 kunlik') || err.message.includes('tugadi')) {
+        this.logout();
+      }
+      return null;
+    }
   },
 
   logout() {
-    const auth = this.getParentAuth();
-    auth.isLoggedIn = false;
-    this.saveParentAuth(auth);
+    const token = this.getToken();
+    if (token) {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` }
+      }).catch(() => {});
+    }
+    localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    localStorage.removeItem(STORAGE_KEYS.CHILD_PROFILES);
+    localStorage.removeItem(STORAGE_KEYS.ACTIVE_CHILD_ID);
+    localStorage.removeItem(STORAGE_KEYS.SESSION_EXPIRES_AT);
+    localStorage.removeItem(STORAGE_KEYS.LAST_ACTIVE_TIME);
   },
 
   // Child Profiles
   getChildren() {
     const raw = localStorage.getItem(STORAGE_KEYS.CHILD_PROFILES);
-    if (!raw) {
-      this.saveChildren(DEFAULT_CHILDREN);
-      return DEFAULT_CHILDREN;
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return [];
     }
-    return JSON.parse(raw);
   },
 
   saveChildren(children) {
@@ -140,13 +202,13 @@ export const storageService = {
 
   getActiveChildId() {
     const raw = localStorage.getItem(STORAGE_KEYS.ACTIVE_CHILD_ID);
-    if (!raw) {
-      const children = this.getChildren();
-      const firstId = children[0]?.id || 'child_1';
+    if (raw) return raw;
+    const children = this.getChildren();
+    const firstId = children[0]?.id || '';
+    if (firstId) {
       this.setActiveChildId(firstId);
-      return firstId;
     }
-    return raw;
+    return firstId;
   },
 
   setActiveChildId(id) {
@@ -164,46 +226,62 @@ export const storageService = {
     const activeId = this.getActiveChildId();
     const index = children.findIndex(c => c.id === activeId);
     if (index !== -1) {
-      children[index] = { ...children[index], ...updates };
+      const merged = { ...children[index], ...updates };
+      children[index] = merged;
       this.saveChildren(children);
-      return children[index];
+
+      // Async sync to persistent backend database
+      this.syncChildToBackend(merged);
+      return merged;
     }
     return null;
   },
 
-  addChild(newChildData) {
-    const children = this.getChildren();
-    const newChild = {
-      id: 'child_' + Date.now(),
-      name: newChildData.name || 'Yangi Bilimdon',
-      ageGroup: newChildData.ageGroup || '7-8',
-      avatar: newChildData.avatar || '🦊',
-      mascotName: newChildData.mascotName || 'Doni',
-      xp: 0,
-      level: 1,
-      coins: 20,
-      streak: 1,
-      lastActiveDate: new Date().toISOString().split('T')[0],
-      unlockedBadges: ['first_step'],
-      equippedCostume: { hat: null, accessory: null },
-      inventory: [],
-      completedLessons: { math: [], alphabet: [], stories: [] },
-      dailyTimeLimitMinutes: newChildData.dailyTimeLimitMinutes || 30,
-      ...newChildData,
-    };
-    children.push(newChild);
-    this.saveChildren(children);
-    this.setActiveChildId(newChild.id);
-    return newChild;
+  async syncChildToBackend(childData) {
+    const token = this.getToken();
+    if (!token || !childData) return;
+
+    try {
+      await this.apiRequest('/api/user/sync', {
+        method: 'POST',
+        body: JSON.stringify({
+          childId: childData.id,
+          name: childData.name,
+          ageGroup: childData.ageGroup,
+          avatar: childData.avatar,
+          mascotName: childData.mascotName,
+          xp: childData.xp,
+          level: childData.level,
+          coins: childData.coins,
+          streak: childData.streak,
+          lastActiveDate: childData.lastActiveDate,
+          unlockedBadges: childData.unlockedBadges,
+          equippedCostume: childData.equippedCostume,
+          inventory: childData.inventory,
+          completedLessons: childData.completedLessons,
+        })
+      });
+    } catch (err) {
+      console.warn('Backend sync deferred:', err.message);
+    }
   },
 
-  deleteChild(childId) {
-    let children = this.getChildren();
-    if (children.length <= 1) return false; // Keep at least one child
-    children = children.filter(c => c.id !== childId);
-    this.saveChildren(children);
-    this.setActiveChildId(children[0].id);
-    return true;
+  async addChild(newChildData) {
+    try {
+      const res = await this.apiRequest('/api/children', {
+        method: 'POST',
+        body: JSON.stringify(newChildData)
+      });
+      if (res && res.children) {
+        this.saveChildren(res.children);
+        const newest = res.children[res.children.length - 1];
+        if (newest) this.setActiveChildId(newest.id);
+        return newest;
+      }
+    } catch (e) {
+      console.warn('Failed to add child on backend:', e);
+    }
+    return null;
   },
 
   // Gamification: Add XP and calculate level
@@ -229,7 +307,7 @@ export const storageService = {
     const currentXp = child.xp || 0;
     const newXp = currentXp + xpAmount;
     const oldLevel = child.level || 1;
-    // Level formula: Level 1 (0-100), Level 2 (100-250), Level 3 (250-450), Level 4 (450-700), Level 5 (700+)
+    // Level formula: Level 1 (0-100), Level 2 (100-250), Level 3 (250-450)...
     const newLevel = Math.floor(Math.sqrt(newXp / 50)) + 1;
     const levelUp = newLevel > oldLevel;
 
@@ -256,11 +334,8 @@ export const storageService = {
   getLogs(childId = null) {
     const raw = localStorage.getItem(STORAGE_KEYS.LEARNING_LOGS);
     let logs = [];
-    if (!raw) {
-      logs = DEFAULT_LOGS;
-      localStorage.setItem(STORAGE_KEYS.LEARNING_LOGS, JSON.stringify(logs));
-    } else {
-      logs = JSON.parse(raw);
+    if (raw) {
+      try { logs = JSON.parse(raw); } catch { logs = []; }
     }
     if (childId) {
       return logs.filter(l => l.childId === childId);
@@ -282,16 +357,26 @@ export const storageService = {
       timestamp: new Date().toISOString(),
     };
     logs.unshift(newLog);
-    localStorage.setItem(STORAGE_KEYS.LEARNING_LOGS, JSON.stringify(logs.slice(0, 100))); // Keep last 100
+    localStorage.setItem(STORAGE_KEYS.LEARNING_LOGS, JSON.stringify(logs.slice(0, 100)));
+
+    // Sync to backend asynchronously
+    this.apiRequest('/api/logs', {
+      method: 'POST',
+      body: JSON.stringify(newLog)
+    }).catch(() => {});
+
     return newLog;
   },
 
-  // Reset all data
-  resetAllData() {
-    localStorage.clear();
-    this.saveParentAuth(DEFAULT_PARENT);
-    this.saveChildren(DEFAULT_CHILDREN);
-    this.setActiveChildId(DEFAULT_CHILDREN[0].id);
-    localStorage.setItem(STORAGE_KEYS.LEARNING_LOGS, JSON.stringify(DEFAULT_LOGS));
+  // Backwards compatibility for Parent Pin
+  getParentAuth() {
+    const user = this.getCurrentUser();
+    return {
+      id: user?.id || 'user_1',
+      name: user?.name || 'Ota-Ona',
+      email: user?.email || '',
+      pin: user?.pin || '1234',
+      isLoggedIn: this.isUserAuthenticated(),
+    };
   }
 };

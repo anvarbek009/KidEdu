@@ -1,40 +1,83 @@
 import React, { useState } from 'react';
-import { Shield, Lock, Mail, User, Sparkles, ArrowRight, CheckCircle2, Heart, BookOpen, Calculator } from 'lucide-react';
+import { 
+  Shield, 
+  Lock, 
+  Mail, 
+  User, 
+  Sparkles, 
+  ArrowRight, 
+  CheckCircle2, 
+  Loader2,
+  Baby
+} from 'lucide-react';
 import { storageService } from '../../services/storageService';
 import { audio } from '../../services/audioService';
 import MascotDoni from '../mascot/MascotDoni';
 
 export default function AuthScreen({ onAuthSuccess }) {
   const [isRegister, setIsRegister] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [pin, setPin] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  // Form Fields
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [childName, setChildName] = useState('');
+  const [childAgeGroup, setChildAgeGroup] = useState('7-8');
+  const [childAvatar, setChildAvatar] = useState('🦊');
+
+  const avatarOptions = [
+    { emoji: '🦊', label: 'Tulki Doni' },
+    { emoji: '🐰', label: 'Quyonvoy' },
+    { emoji: '🐻', label: 'Ayiqcha' },
+    { emoji: '🦁', label: 'Shercha' },
+    { emoji: '🐼', label: 'Panda' },
+  ];
+
+  const handleLogin = async (e) => {
     e?.preventDefault();
     setError('');
 
-    if (!pin || pin.length !== 4) {
-      setError('4 xonali PIN-kodni to\'liq kiriting!');
+    const trimmedEmail = email.trim();
+    const trimmedPass = password.trim();
+
+    if (!trimmedEmail) {
+      setError('Iltimos, email manzilingizni kiriting!');
       audio.playWrong();
       return;
     }
 
-    const auth = storageService.getParentAuth();
-    if (auth.pin === pin || pin === '1234') {
-      audio.playLevelUp();
-      audio.speakUzbek("Xush kelibsiz! Ta'lim olamiga kirmoqdamiz!");
-      const updatedAuth = { ...auth, isLoggedIn: true };
-      storageService.saveParentAuth(updatedAuth);
-      onAuthSuccess(updatedAuth);
-    } else {
-      setError("Noto'g'ri PIN-kod! (Demo PIN: 1234)");
+    if (!trimmedPass) {
+      setError('Iltimos, parolingizni kiriting!');
       audio.playWrong();
+      return;
+    }
+
+    if (trimmedPass.length < 8) {
+      setError("Parol kamida 8 ta belgidan iborat bo'lishi kerak!");
+      audio.playWrong();
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const result = await storageService.login({
+        email: trimmedEmail,
+        password: trimmedPass
+      });
+
+      audio.playLevelUp();
+      onAuthSuccess(result);
+    } catch (err) {
+      setError(err.message || "Noto'g'ri email yoki parol!");
+      audio.playWrong();
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -44,34 +87,44 @@ export default function AuthScreen({ onAuthSuccess }) {
       return;
     }
 
-    if (!pin || pin.length !== 4) {
-      setError("4 xonali maxsus PIN-kod yarating!");
+    if (!email.trim() || !email.includes('@')) {
+      setError("To'g'ri email manzilini kiriting!");
       audio.playWrong();
       return;
     }
 
-    const newAuth = {
-      id: 'parent_' + Date.now(),
-      name: name.trim(),
-      email: email.trim() || 'otaona@kidedu.uz',
-      pin: pin.trim(),
-      isLoggedIn: true,
-    };
+    if (!password || password.trim().length < 8) {
+      setError("Parol kamida 8 ta belgidan iborat bo'lishi kerak!");
+      audio.playWrong();
+      return;
+    }
 
-    storageService.saveParentAuth(newAuth);
-    audio.playLevelUp();
-    audio.speakUzbek(`Xush kelibsiz, ${name}! Profil muvaffaqiyatli yaratildi!`);
-    onAuthSuccess(newAuth);
-  };
+    if (!childName.trim()) {
+      setError("Farzandingiz ismini kiriting!");
+      audio.playWrong();
+      return;
+    }
 
-  const handleQuickDemoLogin = () => {
-    audio.playPop();
-    const auth = storageService.getParentAuth();
-    auth.isLoggedIn = true;
-    storageService.saveParentAuth(auth);
-    audio.playLevelUp();
-    audio.speakUzbek("Tezkor kirish amalga oshirildi! Marhamat!");
-    onAuthSuccess(auth);
+    setIsLoading(true);
+    try {
+      const result = await storageService.register({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password: password.trim(),
+        childName: childName.trim(),
+        childAgeGroup,
+        childAvatar,
+        childMascot: childAvatar === '🦊' ? 'Doni' : childAvatar === '🐰' ? 'Quyonvoy' : 'Bilimdon'
+      });
+
+      audio.playLevelUp();
+      onAuthSuccess(result);
+    } catch (err) {
+      setError(err.message || "Ro'yxatdan o'tishda xatolik yuz berdi!");
+      audio.playWrong();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -109,7 +162,7 @@ export default function AuthScreen({ onAuthSuccess }) {
 
         <div className="hidden sm:flex items-center gap-2 bg-paper-50 border-2 border-clay-dark px-3 py-1.5 rounded-2xl shadow-clay-sm text-xs font-bold text-clay-dark">
           <Shield size={14} className="text-terracotta" />
-          <span>Xavfsiz Oila Muhiti</span>
+          <span>Xavfsiz Ta'lim Muhiti</span>
         </div>
       </header>
 
@@ -146,7 +199,7 @@ export default function AuthScreen({ onAuthSuccess }) {
                 <span className="text-lg">🔢</span>
                 <div>
                   <div className="text-xs font-black text-clay-dark">Matematika</div>
-                  <div className="text-[10px] text-clay/70 font-semibold">Sanash & Mantiq</div>
+                  <div className="text-[10px] text-clay/70 font-semibold">50 ta Qiziqarli Dars</div>
                 </div>
               </div>
             </div>
@@ -156,7 +209,7 @@ export default function AuthScreen({ onAuthSuccess }) {
               <MascotDoni
                 size="md"
                 emotion="happy"
-                speech="Salom! Ta'lim olamiga kirish uchun kiring yoki ro'yxatdan o'ting!"
+                speech="Salom! Ta'lim olamiga kirish uchun kiring yoki yangi hisob oching!"
               />
             </div>
           </div>
@@ -203,90 +256,24 @@ export default function AuthScreen({ onAuthSuccess }) {
                 /* LOGIN FORM */
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="text-center mb-2">
-                    <h2 className="text-xl font-black text-clay-dark">Oila Kabinetiga Kirish</h2>
+                    <h2 className="text-xl font-black text-clay-dark">Hisobga Kirish</h2>
                     <p className="text-xs text-clay/70 font-bold mt-0.5">
-                      Standart demo PIN-kod: <strong className="text-terracotta bg-terracotta-soft px-1.5 py-0.5 rounded border border-terracotta/30">1234</strong>
+                      Email va parolingizni kiritib shaxsiy profilingizga kiring
                     </p>
                   </div>
 
                   <div>
-                    <label className="text-xs font-black text-clay-dark block mb-1.5 text-center">
-                      4 xonali ota-ona PIN-kodini kiriting:
+                    <label className="text-xs font-black text-clay-dark block mb-1">
+                      Email manzil:
                     </label>
-                    <div className="relative max-w-[200px] mx-auto">
-                      <Lock size={18} className="absolute left-3.5 top-3.5 text-clay/50" />
-                      <input
-                        type="password"
-                        maxLength={4}
-                        autoFocus
-                        value={pin}
-                        onChange={(e) => setPin(e.target.value)}
-                        placeholder="• • • •"
-                        className="w-full bg-white border-3 border-clay-dark rounded-2xl py-2.5 pl-10 pr-3 text-center text-2xl tracking-widest font-black focus:outline-none focus:ring-2 focus:ring-sunny shadow-inner"
-                      />
-                    </div>
-                  </div>
-
-                  {error && (
-                    <p className="text-xs font-bold text-terracotta-dark text-center animate-wiggle">
-                      {error}
-                    </p>
-                  )}
-
-                  <button
-                    type="submit"
-                    className="w-full clay-btn bg-sage hover:bg-sage-dark text-white py-3.5 text-sm sm:text-base font-black shadow-clay flex items-center justify-center gap-2"
-                  >
-                    <span>Ta'lim Olamiga Kirish</span>
-                    <ArrowRight size={18} />
-                  </button>
-
-                  {/* 1-Click Quick Demo Login Button */}
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={handleQuickDemoLogin}
-                      className="w-full clay-btn bg-sunny-soft hover:bg-sunny text-clay-dark py-2.5 text-xs font-black border-2 flex items-center justify-center gap-2"
-                    >
-                      <Sparkles size={15} className="text-terracotta" />
-                      <span>1-Bosishda Tezkor Demo Kirish (Azizbek & Madina)</span>
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                /* REGISTER FORM */
-                <form onSubmit={handleRegister} className="space-y-3.5">
-                  <div className="text-center mb-1">
-                    <h2 className="text-xl font-black text-clay-dark">Yangi Oila Profilini Yaratish</h2>
-                    <p className="text-xs text-clay/70 font-bold mt-0.5">
-                      Ota-ona ma'lumotlarini kiriting
-                    </p>
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-black text-clay-dark block mb-1">Ismingiz (Ota-ona):</label>
-                    <div className="relative">
-                      <User size={16} className="absolute left-3 top-3 text-clay/50" />
-                      <input
-                        type="text"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Masalan: Nodira Karimova"
-                        className="w-full bg-white border-2.5 border-clay-dark rounded-xl py-2 pl-9 pr-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-sunny"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-black text-clay-dark block mb-1">Email (Ixtiyoriy):</label>
                     <div className="relative">
                       <Mail size={16} className="absolute left-3 top-3 text-clay/50" />
                       <input
                         type="email"
+                        required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="oila@kidedu.uz"
+                        placeholder="email@misol.uz"
                         className="w-full bg-white border-2.5 border-clay-dark rounded-xl py-2 pl-9 pr-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-sunny"
                       />
                     </div>
@@ -294,18 +281,18 @@ export default function AuthScreen({ onAuthSuccess }) {
 
                   <div>
                     <label className="text-xs font-black text-clay-dark block mb-1">
-                      Xavfsizlik PIN-kodi (4 raqam):
+                      Parol (kamida 8 ta belgi):
                     </label>
                     <div className="relative">
                       <Lock size={16} className="absolute left-3 top-3 text-clay/50" />
                       <input
                         type="password"
-                        maxLength={4}
                         required
-                        value={pin}
-                        onChange={(e) => setPin(e.target.value)}
-                        placeholder="Masalan: 5566"
-                        className="w-full bg-white border-2.5 border-clay-dark rounded-xl py-2 pl-9 pr-3 text-center text-lg tracking-widest font-black focus:outline-none focus:ring-2 focus:ring-sunny"
+                        minLength={8}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full bg-white border-2.5 border-clay-dark rounded-xl py-2 pl-9 pr-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-sunny shadow-inner"
                       />
                     </div>
                   </div>
@@ -318,10 +305,158 @@ export default function AuthScreen({ onAuthSuccess }) {
 
                   <button
                     type="submit"
-                    className="w-full clay-btn bg-terracotta hover:bg-terracotta-dark text-white py-3.5 text-sm sm:text-base font-black shadow-clay flex items-center justify-center gap-2"
+                    disabled={isLoading}
+                    className="w-full clay-btn bg-sage hover:bg-sage-dark text-white py-3.5 text-sm sm:text-base font-black shadow-clay flex items-center justify-center gap-2"
                   >
-                    <CheckCircle2 size={18} />
-                    <span>Hisobni Yaratish & Boshlash</span>
+                    {isLoading ? (
+                      <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                      <>
+                        <span>Ta'lim Olamiga Kirish</span>
+                        <ArrowRight size={18} />
+                      </>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                /* REGISTER FORM */
+                <form onSubmit={handleRegister} className="space-y-3">
+                  <div className="text-center mb-1">
+                    <h2 className="text-xl font-black text-clay-dark">Yangi Hisob Ochish</h2>
+                    <p className="text-xs text-clay/70 font-bold mt-0.5">
+                      0 tanga va 1-darsdan yangi alohida profil bilan boshlaysiz!
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[11px] font-black text-clay-dark block mb-1">Ism:</label>
+                      <div className="relative">
+                        <User size={14} className="absolute left-2.5 top-2.5 text-clay/50" />
+                        <input
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Nodira Karimova"
+                          className="w-full bg-white border-2 border-clay-dark rounded-xl py-1.5 pl-8 pr-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-sunny"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-black text-clay-dark block mb-1">Email:</label>
+                      <div className="relative">
+                        <Mail size={14} className="absolute left-2.5 top-2.5 text-clay/50" />
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="nodira@gmail.com"
+                          className="w-full bg-white border-2 border-clay-dark rounded-xl py-1.5 pl-8 pr-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-sunny"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[11px] font-black text-clay-dark block mb-1">Farzand Ismi:</label>
+                      <div className="relative">
+                        <Baby size={14} className="absolute left-2.5 top-2.5 text-clay/50" />
+                        <input
+                          type="text"
+                          required
+                          value={childName}
+                          onChange={(e) => setChildName(e.target.value)}
+                          placeholder="Ali"
+                          className="w-full bg-white border-2 border-clay-dark rounded-xl py-1.5 pl-8 pr-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-sunny"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-black text-clay-dark block mb-1">
+                        Parol (kamida 8 ta):
+                      </label>
+                      <div className="relative">
+                        <Lock size={14} className="absolute left-2.5 top-2.5 text-clay/50" />
+                        <input
+                          type="password"
+                          minLength={8}
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="Kamida 8 belgi"
+                          className="w-full bg-white border-2 border-clay-dark rounded-xl py-1.5 pl-8 pr-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-sunny"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Age Group Selection */}
+                  <div>
+                    <label className="text-[11px] font-black text-clay-dark block mb-1">Yosh Guruhi:</label>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {['5-6', '7-8', '9-10'].map((age) => (
+                        <button
+                          key={age}
+                          type="button"
+                          onClick={() => setChildAgeGroup(age)}
+                          className={`py-1 text-xs font-black rounded-xl border-2 transition-all ${
+                            childAgeGroup === age
+                              ? 'bg-sunny text-clay-dark border-clay-dark shadow-clay-sm'
+                              : 'bg-white text-clay/70 border-clay-dark/30'
+                          }`}
+                        >
+                          {age} yosh
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Mascot Avatar Selection */}
+                  <div>
+                    <label className="text-[11px] font-black text-clay-dark block mb-1">Qahramon Tanlang:</label>
+                    <div className="flex justify-between gap-1">
+                      {avatarOptions.map((av) => (
+                        <button
+                          key={av.emoji}
+                          type="button"
+                          onClick={() => setChildAvatar(av.emoji)}
+                          className={`flex-1 p-1 text-xl rounded-xl border-2 transition-all ${
+                            childAvatar === av.emoji
+                              ? 'bg-sunny border-clay-dark shadow-clay-sm scale-110'
+                              : 'bg-white border-clay-dark/30 hover:bg-paper-100'
+                          }`}
+                          title={av.label}
+                        >
+                          {av.emoji}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {error && (
+                    <p className="text-xs font-bold text-terracotta-dark text-center animate-wiggle">
+                      {error}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full clay-btn bg-terracotta hover:bg-terracotta-dark text-white py-3 text-sm sm:text-base font-black shadow-clay flex items-center justify-center gap-2 mt-2"
+                  >
+                    {isLoading ? (
+                      <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                      <>
+                        <CheckCircle2 size={18} />
+                        <span>Hisobni Yaratish & Boshlash (0 Tanga)</span>
+                      </>
+                    )}
                   </button>
                 </form>
               )}

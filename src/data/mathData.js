@@ -1,327 +1,921 @@
-// Mathematics Curriculum & Questions generator for ages 5-6, 7-8, 9-10
+// 50 Comprehensive & Meaningful Mathematics Lessons for KidEdu Uzbekistan
+// Age-appropriate, progressive, with explanations, step-by-step examples, and exercises
 
+export const ALL_MATH_LESSONS = [
+  {
+    id: 'math_1',
+    lessonNumber: 1,
+    title: '1 dan 5 gacha sanash',
+    subtitle: 'Narsalarni birma-bir barmoq bilan sanash',
+    icon: '🍎',
+    color: '#E26D5C',
+    category: 'Boshlang\'ich',
+    explanation: 'Har bir buyumni ketma-ket bittadan sanaymiz: bir (1), ikki (2), uch (3), to\'rt (4), besh (5).',
+    stepByStep: 'Misol: Savatda 3 ta olma bor: 🍎, 🍎, 🍎. Barmog\'ingiz bilan bittalab sanang: 1, 2, 3! Hammasi bo\'lib 3 ta olma.',
+    questions: [
+      { id: 'm1_q1', prompt: 'Savatda nechta olma bor? 🍎 🍎 🍎', visualItems: ['🍎', '🍎', '🍎'], correctAnswer: 3, options: [2, 3, 4], hint: 'Olmalar ustiga bittalab barmog\'ingizni qo\'ying.' },
+      { id: 'm1_q2', prompt: 'Nechta yulduzcha porlab turibdi? ⭐️ ⭐️', visualItems: ['⭐️', '⭐️'], correctAnswer: 2, options: [1, 2, 3], hint: 'Bir, ikki!' },
+      { id: 'm1_q3', prompt: 'Daraxtda nechta qushcha bor? 🐥 🐥 🐥 🐥', visualItems: ['🐥', '🐥', '🐥', '🐥'], correctAnswer: 4, options: [3, 4, 5], hint: 'Oxirgi qushchagacha sanang.' },
+      { id: 'm1_q4', prompt: 'Nechta shirin qulupnay bor? 🍓 🍓 🍓 🍓 🍓', visualItems: ['🍓', '🍓', '🍓', '🍓', '🍓'], correctAnswer: 5, options: [4, 5, 6], hint: 'Besh qo\'l barmog\'ingizcha qulupnay bor.' },
+      { id: 'm1_q5', prompt: 'Osmonda nechta quyosh bor? ☀️', visualItems: ['☀️'], correctAnswer: 1, options: [1, 2, 0], hint: 'Yagona va yorqin quyosh.' },
+    ]
+  },
+  {
+    id: 'math_2',
+    lessonNumber: 2,
+    title: '6 dan 10 gacha sanash',
+    subtitle: 'Ikki qo\'l barmoqlari bilan to\'liq o\'nlikka yetish',
+    icon: '🖐️',
+    color: '#F3B749',
+    category: 'Boshlang\'ich',
+    explanation: 'Beshdan keyin olti (6), yetti (7), sakkiz (8), to\'qqiz (9) va o\'n (10) keladi. Ikkala qo\'limizda jami 10 ta barmoq bor!',
+    stepByStep: 'Misol: 5 ta barmoqqa yana 2 ta barmoq qo\'shsak: 5, 6, 7 — jami 7 ta bo\'ladi.',
+    questions: [
+      { id: 'm2_q1', prompt: 'Nechta sabzi bor? 🥕🥕🥕🥕🥕🥕', visualItems: ['🥕', '🥕', '🥕', '🥕', '🥕', '🥕'], correctAnswer: 6, options: [5, 6, 7], hint: '5 tadan keyin yana bitta sabzi bor.' },
+      { id: 'm2_q2', prompt: 'Nechta baliq suzmoqda? 🐟🐟🐟🐟🐟🐟🐟', visualItems: ['🐟', '🐟', '🐟', '🐟', '🐟', '🐟', '🐟'], correctAnswer: 7, options: [6, 7, 8], hint: 'Haftada 7 kun bor, baliqlar ham shuncha.' },
+      { id: 'm2_q3', prompt: 'Nechta to\'p bor? ⚽️⚽️⚽️⚽️⚽️⚽️⚽️⚽️', visualItems: ['⚽️', '⚽️', '⚽️', '⚽️', '⚽️', '⚽️', '⚽️', '⚽️'], correctAnswer: 8, options: [7, 8, 9], hint: 'To\'qqizdan bitta kam.' },
+      { id: 'm2_q4', prompt: 'Nechta kapalak uchmoqda? 🦋🦋🦋🦋🦋🦋🦋🦋🦋', visualItems: ['🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋'], correctAnswer: 9, options: [8, 9, 10], hint: 'O\'ntadan bitta kam.' },
+      { id: 'm2_q5', prompt: 'Nechta sharlar bor? 🎈🎈🎈🎈🎈🎈🎈🎈🎈🎈', visualItems: ['🎈', '🎈', '🎈', '🎈', '🎈', '🎈', '🎈', '🎈', '🎈', '🎈'], correctAnswer: 10, options: [9, 10, 11], hint: 'To\'liq o\'nlik sharlar.' },
+    ]
+  },
+  {
+    id: 'math_3',
+    lessonNumber: 3,
+    title: 'Katta, Kichik va Teng (1-10)',
+    subtitle: 'Narsalar sonini taqqoslash belgilari: >, <, =',
+    icon: '⚖️',
+    color: '#6EA888',
+    category: 'Taqqoslash',
+    explanation: 'Qaysi tomonda narsalar ko\'p bo\'lsa, timsohning og\'zi o\'sha tomonga ochiladi! Masalan: 5 > 3. Sonlar bir xil bo\'lsa, teng (=) bo\'ladi.',
+    stepByStep: 'Misol: Chapda 4 ta olma, o\'ngda 2 ta olma. 4 soni 2 dan katta: 4 > 2.',
+    questions: [
+      { id: 'm3_q1', prompt: '5 va 3 sonlarini taqqoslang: 5 [ ? ] 3', correctAnswer: '>', options: ['>', '<', '='], hint: '5 soni 3 dan katta.' },
+      { id: 'm3_q2', prompt: '2 va 6 sonlarini taqqoslang: 2 [ ? ] 6', correctAnswer: '<', options: ['>', '<', '='], hint: '2 soni 6 dan kichik.' },
+      { id: 'm3_q3', prompt: '4 va 4 sonlarini taqqoslang: 4 [ ? ] 4', correctAnswer: '=', options: ['>', '<', '='], hint: 'Ikkala tomon teng.' },
+      { id: 'm3_q4', prompt: 'Qaysi biri ko\'p: 7 ta nokmi yoki 9 ta nok?', correctAnswer: '9 ta', options: ['7 ta', '9 ta', 'Ikkalasi teng'], hint: '9 soni 7 dan keyin keladi.' },
+      { id: 'm3_q5', prompt: '8 [ ? ] 10 belgisini to\'g\'ri qo\'ying', correctAnswer: '<', options: ['>', '<', '='], hint: '8 o\'ndan kichik.' },
+    ]
+  },
+  {
+    id: 'math_4',
+    lessonNumber: 4,
+    title: '1 dan 5 gacha qo\'shish',
+    subtitle: 'Narsalarni birlashtirish va jamlash amali (+)',
+    icon: '➕',
+    color: '#6AA8C8',
+    category: 'Qo\'shish',
+    explanation: 'Qo\'shish (+) — bu narsalarni bir joyga to\'plashdir. Masalan, 2 ta olmaga 1 ta olma qo\'shsak, 3 ta bo\'ladi.',
+    stepByStep: 'Misol: 2 + 1 = ? Bitta savatda 2 ta, boshqasida 1 ta. Hammasi: 1, 2, 3! Javob: 3.',
+    questions: [
+      { id: 'm4_q1', prompt: 'Hisoblang: 1 + 1 = ?', correctAnswer: 2, options: [1, 2, 3], hint: 'Bitta va yana bitta.' },
+      { id: 'm4_q2', prompt: 'Hisoblang: 2 + 2 = ?', correctAnswer: 4, options: [3, 4, 5], hint: 'Ikki juft barmoq.' },
+      { id: 'm4_q3', prompt: 'Hisoblang: 3 + 1 = ?', correctAnswer: 4, options: [3, 4, 5], hint: 'Uchdan keyingi son.' },
+      { id: 'm4_q4', prompt: 'Hisoblang: 2 + 3 = ?', correctAnswer: 5, options: [4, 5, 6], hint: 'Besh qo\'l panjasi.' },
+      { id: 'm4_q5', prompt: 'Hisoblang: 4 + 1 = ?', correctAnswer: 5, options: [5, 6, 4], hint: 'To\'rtdan bitta ko\'p.' },
+    ]
+  },
+  {
+    id: 'math_5',
+    lessonNumber: 5,
+    title: '1 dan 5 gacha ayirish',
+    subtitle: 'Narsalarni kamaytirish va olib tashlash amali (-)',
+    icon: '➖',
+    color: '#9A7AA0',
+    category: 'Ayirish',
+    explanation: 'Ayirish (-) — narsalardan bir qismini olib tashlash yoki yeb qo\'yishdir. Masalan, 3 ta olmadan 1 tasini yesak, 2 ta qoladi.',
+    stepByStep: 'Misol: 4 - 1 = ? 4 ta shardan 1 tasi uchib ketdi. Qolgani: 3 ta shar!',
+    questions: [
+      { id: 'm5_q1', prompt: 'Hisoblang: 3 - 1 = ?', correctAnswer: 2, options: [1, 2, 3], hint: 'Uchdan bittasini olib tashlang.' },
+      { id: 'm5_q2', prompt: 'Hisoblang: 4 - 2 = ?', correctAnswer: 2, options: [1, 2, 3], hint: 'To\'rtdan ikkitasini ayiring.' },
+      { id: 'm5_q3', prompt: 'Hisoblang: 5 - 1 = ?', correctAnswer: 4, options: [3, 4, 5], hint: 'Beshdan oldingi son.' },
+      { id: 'm5_q4', prompt: 'Hisoblang: 2 - 1 = ?', correctAnswer: 1, options: [0, 1, 2], hint: 'Ikkidan bittasi ketsa bitta qoladi.' },
+      { id: 'm5_q5', prompt: 'Hisoblang: 5 - 3 = ?', correctAnswer: 2, options: [1, 2, 3], hint: 'Besh barmoqdan uchtasini buking.' },
+    ]
+  },
+  {
+    id: 'math_6',
+    lessonNumber: 6,
+    title: 'Nol (0) sonining sehri',
+    subtitle: 'Hech narsa qolmaganda nol soni hosil bo\'ladi',
+    icon: '⭕️',
+    color: '#E26D5C',
+    category: 'Asoslar',
+    explanation: 'Agar lagandagi barcha 3 ta olmani yesak, laganda 0 (nol) ta olma qoladi. Har qanday songa 0 qo\'shsak, son o\'zgarmaydi: 5 + 0 = 5.',
+    stepByStep: 'Misol: 3 - 3 = 0. Uchta qushning uchtasi ham uchib ketdi. Shoxda 0 ta qush qoldi.',
+    questions: [
+      { id: 'm6_q1', prompt: 'Hisoblang: 3 - 3 = ?', correctAnswer: 0, options: [0, 1, 3], hint: 'Hamma narsa ketgach hech narsa qolmaydi.' },
+      { id: 'm6_q2', prompt: 'Hisoblang: 4 + 0 = ?', correctAnswer: 4, options: [0, 4, 5], hint: 'Nol soni qo\'shilganda son o\'zgarmaydi.' },
+      { id: 'm6_q3', prompt: 'Hisoblang: 5 - 0 = ?', correctAnswer: 5, options: [0, 4, 5], hint: 'Hech narsa olib tashlanmadi.' },
+      { id: 'm6_q4', prompt: 'Laganda 2 ta nok bor edi. Ikkalasini ham edik. Nechta qoldi?', correctAnswer: 0, options: [0, 1, 2], hint: 'Laganda nok qolmadi.' },
+      { id: 'm6_q5', prompt: 'Hisoblang: 0 + 7 = ?', correctAnswer: 7, options: [0, 7, 1], hint: '0 ga 7 ni qo\'shsak 7 bo\'ladi.' },
+    ]
+  },
+  {
+    id: 'math_7',
+    lessonNumber: 7,
+    title: '6 dan 10 gacha qo\'shish',
+    subtitle: 'Katta sonlarni birgalikda jamlash mashqlari',
+    icon: '🎯',
+    color: '#F3B749',
+    category: 'Qo\'shish',
+    explanation: '5 ga boshqa sonlarni qo\'shib, 6, 7, 8, 9 va 10 sonlarini hosil qilamiz. Masalan: 5 + 3 = 8.',
+    stepByStep: 'Misol: 5 + 4 = ? Bitta to\'liq qo\'l (5) va yana 4 ta barmoq. Hammasi: 9 ta!',
+    questions: [
+      { id: 'm7_q1', prompt: 'Hisoblang: 5 + 2 = ?', correctAnswer: 7, options: [6, 7, 8], hint: 'Beshga ikkini qo\'shing.' },
+      { id: 'm7_q2', prompt: 'Hisoblang: 6 + 1 = ?', correctAnswer: 7, options: [7, 8, 6], hint: 'Oltidan keyingi son.' },
+      { id: 'm7_q3', prompt: 'Hisoblang: 5 + 5 = ?', correctAnswer: 10, options: [9, 10, 11], hint: 'Ikkala qo\'l barmoqlari.' },
+      { id: 'm7_q4', prompt: 'Hisoblang: 7 + 2 = ?', correctAnswer: 9, options: [8, 9, 10], hint: 'Yettiga ikki qadam qo\'shing.' },
+      { id: 'm7_q5', prompt: 'Hisoblang: 4 + 4 = ?', correctAnswer: 8, options: [7, 8, 9], hint: 'To\'rtga to\'rtni qo\'shing.' },
+    ]
+  },
+  {
+    id: 'math_8',
+    lessonNumber: 8,
+    title: '6 dan 10 gacha ayirish',
+    subtitle: '10 ichida ayirish amallarini mustahkamlash',
+    icon: '🏹',
+    color: '#6EA888',
+    category: 'Ayirish',
+    explanation: '10 ta narsadan ma\'lum qismini ayiramiz. Masalan: 10 - 2 = 8. Qolgan narsalarni sanab tekshiramiz.',
+    stepByStep: 'Misol: 10 - 3 = ? 10 ta barmoqdan 3 tasini buking. Ochiq qolgani: 7 ta barmoq!',
+    questions: [
+      { id: 'm8_q1', prompt: 'Hisoblang: 10 - 1 = ?', correctAnswer: 9, options: [8, 9, 10], hint: 'O\'ndan bitta kam.' },
+      { id: 'm8_q2', prompt: 'Hisoblang: 8 - 3 = ?', correctAnswer: 5, options: [4, 5, 6], hint: 'Sakkizdan uchtani oling.' },
+      { id: 'm8_q3', prompt: 'Hisoblang: 10 - 5 = ?', correctAnswer: 5, options: [4, 5, 6], hint: 'O\'nning yarmi.' },
+      { id: 'm8_q4', prompt: 'Hisoblang: 9 - 4 = ?', correctAnswer: 5, options: [5, 6, 4], hint: 'To\'qqizdan to\'rtni ayiring.' },
+      { id: 'm8_q5', prompt: 'Hisoblang: 7 - 3 = ?', correctAnswer: 4, options: [3, 4, 5], hint: 'Yettidan uchtasi ketsa to\'rt qoladi.' },
+    ]
+  },
+  {
+    id: 'math_9',
+    lessonNumber: 9,
+    title: 'Juft va Toq sonlar (1-10)',
+    subtitle: 'Sherigi bor (juft) va bittasi ortib qoladigan (toq) sonlar',
+    icon: '👥',
+    color: '#6AA8C8',
+    category: 'Mantiq',
+    explanation: 'Juft sonlar ikkiga teng bo\'linadi (sherigi bor): 2, 4, 6, 8, 10. Toq sonlar: 1, 3, 5, 7, 9.',
+    stepByStep: 'Misol: 4 ta oyoq kiyim = 2 juft poyafzal! Demak, 4 — juft son.',
+    questions: [
+      { id: 'm9_q1', prompt: 'Qaysi son JUFT son?', correctAnswer: 4, options: [3, 4, 5], hint: '2, 4, 6, 8, 10 sonlari juft.' },
+      { id: 'm9_q2', prompt: 'Qaysi son TOQ son?', correctAnswer: 7, options: [6, 7, 8], hint: 'Ikkiga teng bo\'linmaydigan son.' },
+      { id: 'm9_q3', prompt: '2 soni qanday son?', correctAnswer: 'Juft', options: ['Juft', 'Toq'], hint: 'Bir juft ko\'zlar.' },
+      { id: 'm9_q4', prompt: '1, 3, 5, 7, 9 sonlari qanday sonlar?', correctAnswer: 'Toq sonlar', options: ['Juft sonlar', 'Toq sonlar'], hint: 'Sheriksiz bittasi ortib qoladi.' },
+      { id: 'm9_q5', prompt: '10 soni juftmi yoki toqmi?', correctAnswer: 'Juft', options: ['Juft', 'Toq'], hint: '5 va 5 ga teng bo\'linadi.' },
+    ]
+  },
+  {
+    id: 'math_10',
+    lessonNumber: 10,
+    title: 'O\'nlikni hosil qilish (Do\'st sonlar)',
+    subtitle: 'Yig\'indisi 10 ga teng bo\'ladigan sonlar juftligi',
+    icon: '🤝',
+    color: '#9A7AA0',
+    category: 'Mantiq',
+    explanation: '10 ni hosil qiluvchi do\'stlar: 1 va 9, 2 va 8, 3 va 7, 4 va 6, 5 va 5. Ular birgalikda doim 10 bo\'ladi!',
+    stepByStep: 'Misol: 7 ga nechani qo\'shsak 10 bo\'ladi? 7 + 3 = 10. Demak, 7 ning do\'sti — 3!',
+    questions: [
+      { id: 'm10_q1', prompt: '7 + ? = 10 bo\'sh katakdagi sonni toping:', correctAnswer: 3, options: [2, 3, 4], hint: '7 ning do\'st soni.' },
+      { id: 'm10_q2', prompt: '6 + ? = 10 bo\'sh katakdagi sonni toping:', correctAnswer: 4, options: [3, 4, 5], hint: '6 ga 4 ni qo\'shsak 10 bo\'ladi.' },
+      { id: 'm10_q3', prompt: '8 + ? = 10 bo\'sh katakdagi sonni toping:', correctAnswer: 2, options: [1, 2, 3], hint: 'Sakkizga nechta yetmayapti?' },
+      { id: 'm10_q4', prompt: '9 + ? = 10 bo\'sh katakdagi sonni toping:', correctAnswer: 1, options: [1, 2, 0], hint: 'To\'qqizga bitta yetmayapti.' },
+      { id: 'm10_q5', prompt: '5 + 5 yig\'indisi nechaga teng?', correctAnswer: 10, options: [9, 10, 11], hint: 'Beshga besh o\'n bo\'ladi.' },
+    ]
+  },
+  {
+    id: 'math_11',
+    lessonNumber: 11,
+    title: '11 dan 20 gacha sonlar',
+    subtitle: 'Bitta o\'nlik va birliklarni tushunish',
+    icon: '📦',
+    color: '#E26D5C',
+    category: 'O\'nliklar',
+    explanation: '11 — bu 10 va 1. 15 — bu 10 va 5. Har bir son 1 ta o\'nlik va ortiqcha birliklardan tuziladi.',
+    stepByStep: 'Misol: 1 dona 10 talik quti va 4 ta dona qalam = 14 ta qalam.',
+    questions: [
+      { id: 'm11_q1', prompt: '10 va 3 birgalikda qaysi sonni hosil qiladi?', correctAnswer: 13, options: [12, 13, 14], hint: 'O\'n uch.' },
+      { id: 'm11_q2', prompt: '10 va 7 qaysi son?', correctAnswer: 17, options: [16, 17, 18], hint: 'O\'n yetti.' },
+      { id: 'm11_q3', prompt: '15 sonida nechta o\'nlik bor?', correctAnswer: 1, options: [1, 5, 10], hint: 'Bitta o\'nlik va 5 ta birlik.' },
+      { id: 'm11_q4', prompt: '19 sonidan keyin qaysi son keladi?', correctAnswer: 20, options: [18, 20, 21], hint: 'Ikki o\'nlik soni.' },
+      { id: 'm11_q5', prompt: '12 sonidan oldin qaysi son turadi?', correctAnswer: 11, options: [10, 11, 13], hint: 'O\'n bir.' },
+    ]
+  },
+  {
+    id: 'math_12',
+    lessonNumber: 12,
+    title: '1-20 oralig\'ida qo\'shish (O\'tishsiz)',
+    subtitle: 'Birliklarni birliklarga qo\'shish (12 + 3 = 15)',
+    icon: '🚀',
+    color: '#F3B749',
+    category: 'Qo\'shish',
+    explanation: '12 + 3 ni hisoblashda 2 ga 3 ni qo\'shamiz (5), va o\'nlikni yoniga yozamiz: 15!',
+    stepByStep: 'Misol: 14 + 2 = ? 4 + 2 = 6. Bitta o\'nlik bilan: 16!',
+    questions: [
+      { id: 'm12_q1', prompt: 'Hisoblang: 12 + 3 = ?', correctAnswer: 15, options: [14, 15, 16], hint: '2 + 3 = 5, demak 15.' },
+      { id: 'm12_q2', prompt: 'Hisoblang: 15 + 4 = ?', correctAnswer: 19, options: [18, 19, 20], hint: '5 + 4 = 9.' },
+      { id: 'm12_q3', prompt: 'Hisoblang: 11 + 6 = ?', correctAnswer: 17, options: [16, 17, 18], hint: '1 + 6 = 7.' },
+      { id: 'm12_q4', prompt: 'Hisoblang: 13 + 5 = ?', correctAnswer: 18, options: [17, 18, 19], hint: '3 + 5 = 8.' },
+      { id: 'm12_q5', prompt: 'Hisoblang: 10 + 8 = ?', correctAnswer: 18, options: [17, 18, 19], hint: 'O\'n sakkiz.' },
+    ]
+  },
+  {
+    id: 'math_13',
+    lessonNumber: 13,
+    title: '1-20 oralig\'ida ayirish (O\'tishsiz)',
+    subtitle: 'Birliklarni birliklardan ayirish (17 - 4 = 13)',
+    icon: '🪂',
+    color: '#6EA888',
+    category: 'Ayirish',
+    explanation: '17 - 4 ni hisoblashda 7 dan 4 ni ayiramiz (3) va o\'nlik o\'z o\'rnida qoladi: 13.',
+    stepByStep: 'Misol: 18 - 5 = ? 8 dan 5 ni ayirsak 3. O\'nlik bilan: 13.',
+    questions: [
+      { id: 'm13_q1', prompt: 'Hisoblang: 17 - 4 = ?', correctAnswer: 13, options: [12, 13, 14], hint: '7 - 4 = 3.' },
+      { id: 'm13_q2', prompt: 'Hisoblang: 19 - 6 = ?', correctAnswer: 13, options: [13, 14, 15], hint: '9 dan 6 ni ayiring.' },
+      { id: 'm13_q3', prompt: 'Hisoblang: 16 - 3 = ?', correctAnswer: 13, options: [12, 13, 14], hint: '6 - 3 = 3.' },
+      { id: 'm13_q4', prompt: 'Hisoblang: 15 - 5 = ?', correctAnswer: 10, options: [10, 1, 0], hint: 'Barcha birliklar ketsa 10 qoladi.' },
+      { id: 'm13_q5', prompt: 'Hisoblang: 18 - 7 = ?', correctAnswer: 11, options: [10, 11, 12], hint: '8 - 7 = 1.' },
+    ]
+  },
+  {
+    id: 'math_14',
+    lessonNumber: 14,
+    title: 'O\'nlikdan o\'tib qo\'shish (1-20)',
+    subtitle: 'Avval 10 ga yetkazib, keyin qolganini qo\'shish',
+    icon: '⚡️',
+    color: '#6AA8C8',
+    category: 'Qo\'shish',
+    explanation: '8 + 5 ni hisoblash: 8 ga 2 ni qo\'shsak 10 bo\'ladi. 5 dan yana 3 qoldi. 10 + 3 = 13!',
+    stepByStep: 'Misol: 9 + 4 = ? 9 ga 1 qo\'shsak 10, qolgan 3 bilan 13!',
+    questions: [
+      { id: 'm14_q1', prompt: 'Hisoblang: 9 + 3 = ?', correctAnswer: 12, options: [11, 12, 13], hint: '9 + 1 = 10, yana 2 qo\'shsak 12.' },
+      { id: 'm14_q2', prompt: 'Hisoblang: 8 + 4 = ?', correctAnswer: 12, options: [11, 12, 13], hint: '8 + 2 = 10, yana 2 qo\'shsak 12.' },
+      { id: 'm14_q3', prompt: 'Hisoblang: 7 + 5 = ?', correctAnswer: 12, options: [11, 12, 13], hint: '7 + 3 = 10, yana 2 qo\'shsak 12.' },
+      { id: 'm14_q4', prompt: 'Hisoblang: 8 + 6 = ?', correctAnswer: 14, options: [13, 14, 15], hint: '8 + 2 = 10, yana 4 bilan 14.' },
+      { id: 'm14_q5', prompt: 'Hisoblang: 9 + 7 = ?', correctAnswer: 16, options: [15, 16, 17], hint: '9 + 1 = 10, yana 6 bilan 16.' },
+    ]
+  },
+  {
+    id: 'math_15',
+    lessonNumber: 15,
+    title: 'O\'nlikdan o\'tib ayirish (1-20)',
+    subtitle: '10 orqali kamaytirish qoidalari',
+    icon: '🧗',
+    color: '#9A7AA0',
+    category: 'Ayirish',
+    explanation: '14 - 6 ni hisoblash: avval 14 dan 4 ni olamiz (10 qoladi). 6 dan yana 2 ni olamiz: 10 - 2 = 8!',
+    stepByStep: 'Misol: 12 - 5 = ? 12 dan 2 ni ayirsak 10. 10 dan qolgan 3 ni ayirsak 7!',
+    questions: [
+      { id: 'm15_q1', prompt: 'Hisoblang: 12 - 4 = ?', correctAnswer: 8, options: [7, 8, 9], hint: '12 - 2 = 10, 10 - 2 = 8.' },
+      { id: 'm15_q2', prompt: 'Hisoblang: 13 - 5 = ?', correctAnswer: 8, options: [7, 8, 9], hint: '13 dan 3 ni olib 10, keyin 2 ni olamiz.' },
+      { id: 'm15_q3', prompt: 'Hisoblang: 15 - 7 = ?', correctAnswer: 8, options: [8, 9, 7], hint: '15 - 5 = 10, 10 - 2 = 8.' },
+      { id: 'm15_q4', prompt: 'Hisoblang: 11 - 3 = ?', correctAnswer: 8, options: [7, 8, 9], hint: '11 - 1 = 10, 10 - 2 = 8.' },
+      { id: 'm15_q5', prompt: 'Hisoblang: 16 - 8 = ?', correctAnswer: 8, options: [7, 8, 9], hint: '16 ning yarmi sakkiz.' },
+    ]
+  },
+  {
+    id: 'math_16',
+    lessonNumber: 16,
+    title: 'Sehrli Bo\'sh Katak (Tenglamalar)',
+    subtitle: 'Noma\'lum qo\'shiluvchini topish mashqlari',
+    icon: '🔍',
+    color: '#E26D5C',
+    category: 'Mantiq',
+    explanation: 'Noma\'lum qo\'shiluvchini topish uchun yig\'indidan ma\'lum qo\'shiluvchini ayiramiz: ? + 6 = 14 bo\'lsa, 14 - 6 = 8.',
+    stepByStep: 'Misol: 8 + ? = 15. Hisoblaymiz: 15 - 8 = 7. Javob: 7.',
+    questions: [
+      { id: 'm16_q1', prompt: '7 + ? = 15 bo\'sh katakdagi son nechchi?', correctAnswer: 8, options: [7, 8, 9], hint: '15 dan 7 ni ayiring.' },
+      { id: 'm16_q2', prompt: '? + 6 = 13 bo\'sh katakdagi son nechchi?', correctAnswer: 7, options: [6, 7, 8], hint: '13 dan 6 ni ayiring.' },
+      { id: 'm16_q3', prompt: '9 + ? = 18 bo\'sh katakdagi son nechchi?', correctAnswer: 9, options: [8, 9, 10], hint: '18 dan 9 ni ayiring.' },
+      { id: 'm16_q4', prompt: '10 + ? = 16 bo\'sh katakdagi son nechchi?', correctAnswer: 6, options: [5, 6, 7], hint: 'O\'nga olti qo\'shiladi.' },
+      { id: 'm16_q5', prompt: '? + 5 = 12 bo\'sh katakdagi son nechchi?', correctAnswer: 7, options: [6, 7, 8], hint: '12 dan 5 ni ayiring.' },
+    ]
+  },
+  {
+    id: 'math_17',
+    lessonNumber: 17,
+    title: 'Noma\'lum Ayriluvchi va Kamayuvchi',
+    subtitle: 'Ayirish amali orqali jumboqni yechish',
+    icon: '🧩',
+    color: '#F3B749',
+    category: 'Mantiq',
+    explanation: '? - 4 = 10 bo\'lsa, boshida narsa ko\'p bo\'lgan: 10 + 4 = 14. 15 - ? = 10 bo\'lsa, 15 - 10 = 5.',
+    stepByStep: 'Misol: ? - 5 = 8 bo\'lsa, kamayuvchini topish uchun 8 ga 5 ni qo\'shamiz: 13.',
+    questions: [
+      { id: 'm17_q1', prompt: '? - 3 = 10 bo\'lsa, so\'roq o\'rnidagi sonni toping:', correctAnswer: 13, options: [12, 13, 14], hint: '10 ga 3 ni qo\'shing.' },
+      { id: 'm17_q2', prompt: '16 - ? = 10 bo\'lsa, ayriluvchini toping:', correctAnswer: 6, options: [5, 6, 7], hint: '16 dan 10 ni ayiring.' },
+      { id: 'm17_q3', prompt: '? - 7 = 5 bo\'lsa, boshlang\'ich son nechchi?', correctAnswer: 12, options: [11, 12, 13], hint: '7 + 5 = 12.' },
+      { id: 'm17_q4', prompt: '20 - ? = 15 bo\'lsa, noma\'lum sonni toping:', correctAnswer: 5, options: [4, 5, 6], hint: '20 dan 15 ni ayiring.' },
+      { id: 'm17_q5', prompt: '? - 8 = 8 bo\'lsa, so\'roq belgisi nechchi?', correctAnswer: 16, options: [15, 16, 17], hint: '8 + 8 = 16.' },
+    ]
+  },
+  {
+    id: 'math_18',
+    lessonNumber: 18,
+    title: 'Oddiy Matnli Masalalar (Qo\'shish)',
+    subtitle: 'Hayotiy vaziyatlarni matematikaga aylantirish',
+    icon: '📖',
+    color: '#6EA888',
+    category: 'Matnli Masala',
+    explanation: 'Masalada "yana keltirildi", "birgalikda", "jami qancha" so\'zlari bo\'lsa, bu qo\'shish (+) amali bo\'ladi.',
+    stepByStep: 'Misol: Anvarda 5 ta daftar bor edi. Onasi unga yana 3 ta daftar berdi. Jami: 5 + 3 = 8 ta daftar.',
+    questions: [
+      { id: 'm18_q1', prompt: 'Bog\'da 6 ta olma va 4 ta nok daraxti bor. Jami nechta daraxt bor?', correctAnswer: 10, options: [9, 10, 11], hint: '6 + 4 ni hisoblang.' },
+      { id: 'm18_q2', prompt: 'Akmal 7 ta gul terdi, singlisi 5 ta gul terdi. Ular jami nechta gul terishdi?', correctAnswer: 12, options: [11, 12, 13], hint: '7 + 5 = 12.' },
+      { id: 'm18_q3', prompt: 'Savatda 8 ta tuxum bor edi. Yana 4 ta tuxum solindi. Nechta bo\'ldi?', correctAnswer: 12, options: [11, 12, 14], hint: '8 ga 4 ni qo\'shing.' },
+      { id: 'm18_q4', prompt: 'Avtobusda 11 kishi bor edi. Bekatda yana 5 kishi chiqdi. Jami kishilar soni?', correctAnswer: 16, options: [15, 16, 17], hint: '11 + 5 = 16.' },
+      { id: 'm18_q5', prompt: 'Doni 9 ta yulduz yig\'di, so\'ng yana 6 ta yulduz topdi. Jami yulduzlari?', correctAnswer: 15, options: [14, 15, 16], hint: '9 + 6 = 15.' },
+    ]
+  },
+  {
+    id: 'math_19',
+    lessonNumber: 19,
+    title: 'Oddiy Matnli Masalalar (Ayirish)',
+    subtitle: 'Kamayish va farqni topish masalalari',
+    icon: '📉',
+    color: '#6AA8C8',
+    category: 'Matnli Masala',
+    explanation: 'Masalada "uchib ketdi", "berib yubordi", "qoldi", "nechtaga ko\'p/kam" so\'zlari bo\'lsa, ayirish (-) amali bajariladi.',
+    stepByStep: 'Misol: Toshbaqada 10 ta yong\'oq bor edi. U 4 tasini do\'stiga berdi. Qolgani: 10 - 4 = 6 ta.',
+    questions: [
+      { id: 'm19_q1', prompt: 'Daraxtda 9 ta qush o\'tirgan edi. 3 tasi uchib ketdi. Nechta qush qoldi?', correctAnswer: 6, options: [5, 6, 7], hint: '9 dan 3 ni ayiring.' },
+      { id: 'm19_q2', prompt: 'Qutida 15 ta shokolad bor edi. Bolalar 5 tasini yeyishdi. Qolgani nechta?', correctAnswer: 10, options: [9, 10, 11], hint: '15 - 5 = 10.' },
+      { id: 'm19_q3', prompt: 'Jasurning 14 ta qalami bor edi, 4 tasini yo\'qotdi. Nechta qalami qoldi?', correctAnswer: 10, options: [9, 10, 11], hint: '14 dan 4 ni ayiring.' },
+      { id: 'm19_q4', prompt: 'Do\'konda 18 ta koptok bor edi. 6 tasi sotildi. Nechta koptok qoldi?', correctAnswer: 12, options: [11, 12, 13], hint: '18 - 6 = 12.' },
+      { id: 'm19_q5', prompt: 'Akada 10 ta kitob, ukada 7 ta kitob bor. Akaning kitobi nechtaga ko\'p?', correctAnswer: 3, options: [2, 3, 4], hint: '10 - 7 = 3.' },
+    ]
+  },
+  {
+    id: 'math_20',
+    lessonNumber: 20,
+    title: 'Geometrik Shakllar Olamida',
+    subtitle: 'Doira, kvadrat, uchburchak va to\'g\'ri to\'rtburchak',
+    icon: '📐',
+    color: '#9A7AA0',
+    category: 'Geometriya',
+    explanation: 'Doira — yumaloq, burchagi yo\'q (koptok kabi). Uchburchakning 3 ta burchagi bor. Kvadratning 4 ta tomoni bir xil teng.',
+    stepByStep: 'Misol: Quyosh — doira shaklida. Ro\'molcha — kvadrat shaklida. Piramida — uchburchak shaklida.',
+    questions: [
+      { id: 'm20_q1', prompt: 'Uchburchakning nechta burchagi bor?', correctAnswer: 3, options: [2, 3, 4], hint: 'Nomi aytib turibdi: uch-burchak!' },
+      { id: 'm20_q2', prompt: 'Qaysi shaklning umuman burchaklari yo\'q?', correctAnswer: 'Doira', options: ['Kvadrat', 'Doira', 'Uchburchak'], hint: 'Yumaloq shakl.' },
+      { id: 'm20_q3', prompt: 'Kvadratning nechta tomoni bor va ular tengmi?', correctAnswer: '4 ta teng tomon', options: ['3 ta tomon', '4 ta teng tomon', '5 ta tomon'], hint: 'To\'rtta tomoni bir xil.' },
+      { id: 'm20_q4', prompt: 'Eshik va kitob qaysi shaklga o\'xshaydi?', correctAnswer: 'To\'g\'ri to\'rtburchak', options: ['Doira', 'To\'g\'ri to\'rtburchak', 'Uchburchak'], hint: 'Ikkita uzun va ikkita qisqa tomon.' },
+      { id: 'm20_q5', prompt: 'Svetaforning chiroqlari qaysi shaklda?', correctAnswer: 'Doira', options: ['Doira', 'Kvadrat', 'Uchburchak'], hint: 'Dumaloq chiroqlar.' },
+    ]
+  },
+  {
+    id: 'math_21',
+    lessonNumber: 21,
+    title: 'Shakllar Tomonlari va Burchaklari',
+    subtitle: 'Burchaklar, cho\'qqilar va tomonlarni sanash',
+    icon: '🔷',
+    color: '#E26D5C',
+    category: 'Geometriya',
+    explanation: 'Beshburchakda 5 ta burchak, oltiburchakda 6 ta burchak bo\'ladi. Burchak — ikki tomon tutashgan o\'tkir joy.',
+    stepByStep: 'Misol: Asalari uyasi kataklari — oltiburchak shaklida (6 ta tomoni bor).',
+    questions: [
+      { id: 'm21_q1', prompt: 'Beshburchakning nechta tomoni bor?', correctAnswer: 5, options: [4, 5, 6], hint: 'Besh-burchak!' },
+      { id: 'm21_q2', prompt: 'Oltiburchakning nechta cho\'qqisi bor?', correctAnswer: 6, options: [5, 6, 7], hint: 'Oltita cho\'qqi.' },
+      { id: 'm21_q3', prompt: '2 ta uchburchakni birlashtirsak ko\'pincha qaysi shakl hosil bo\'ladi?', correctAnswer: 'To\'rtburchak', options: ['Doira', 'To\'rtburchak', 'Chiziq'], hint: 'To\'rtta burchakli shakl.' },
+      { id: 'm21_q4', prompt: 'Teng tomonli uchburchakning nechta tomoni teng?', correctAnswer: 3, options: [2, 3, 4], hint: 'Barcha uchta tomoni teng.' },
+      { id: 'm21_q5', prompt: 'To\'g\'ri to\'rtburchakda nechta burchak bor?', correctAnswer: 4, options: [3, 4, 5], hint: 'To\'rtta to\'g\'ri burchak.' },
+    ]
+  },
+  {
+    id: 'math_22',
+    lessonNumber: 22,
+    title: 'Uzunlik va O\'lchovlar',
+    subtitle: 'Santimetr (sm) va metr (m) tushunchasi',
+    icon: '📏',
+    color: '#F3B749',
+    category: 'O\'lchovlar',
+    explanation: 'Qisqa narsalar (qalam, daftar) santimetr (sm) bilan o\'lchanadi. Katta masofalar (xona, bo\'yimiz) metr (m) bilan o\'lchanadi.',
+    stepByStep: 'Misol: Chizg\'ichdagi 0 dan 10 gacha bo\'lgan oraliq — 10 sm.',
+    questions: [
+      { id: 'm22_q1', prompt: '1 metrda nechta santimetr bor?', correctAnswer: 100, options: [10, 50, 100], hint: 'Yuz santimetr.' },
+      { id: 'm22_q2', prompt: 'Qalam uzunligini qaysi o\'lchov birligida o\'lchaymiz?', correctAnswer: 'Santimetr (sm)', options: ['Metr (m)', 'Santimetr (sm)', 'Kilogramm (kg)'], hint: 'Kichik narsalar santimetrda.' },
+      { id: 'm22_q3', prompt: '15 sm uzunroqmi yoki 8 sm?', correctAnswer: '15 sm', options: ['15 sm', '8 sm', 'Ikkalasi teng'], hint: '15 soni 8 dan katta.' },
+      { id: 'm22_q4', prompt: 'Qalam 10 sm, chizg\'ich 20 sm. Chizg\'ich necha sm uzunroq?', correctAnswer: 10, options: [5, 10, 15], hint: '20 dan 10 ni ayiring.' },
+      { id: 'm22_q5', prompt: 'Xonaning bo\'yini qaysi birlikda o\'lchash qulay?', correctAnswer: 'Metr (m)', options: ['Metr (m)', 'Santimetr (sm)', 'Gramm'], hint: 'Katta o\'lchov.' },
+    ]
+  },
+  {
+    id: 'math_23',
+    lessonNumber: 23,
+    title: 'Og\'irlik: Og\'ir va Yengil',
+    subtitle: 'Kilogramm (kg) va gramm (g) tushunchalari',
+    icon: '🪨',
+    color: '#6EA888',
+    category: 'O\'lchovlar',
+    explanation: 'Tarozida og\'ir tomon pastga tushadi, yengil tomon tepaga ko\'tariladi. Og\'irlik kilogramm (kg) bilan o\'lchanadi.',
+    stepByStep: 'Misol: Tarvuz (5 kg) olmaga (200 g) qaraganda ancha og\'ir!',
+    questions: [
+      { id: 'm23_q1', prompt: 'Qaysi biri og\'irroq: Filmi yoki quyonmi?', correctAnswer: 'Fil', options: ['Fil', 'Quyon', 'Teng'], hint: 'Ulkan hayvon fil.' },
+      { id: 'm23_q2', prompt: '1 kg temir og\'irmi yoki 1 kg paxtami?', correctAnswer: 'Ikkalasi teng', options: ['1 kg temir', '1 kg paxta', 'Ikkalasi teng'], hint: 'Ikkalasi ham 1 kg!' },
+      { id: 'm23_q3', prompt: 'Tarozida 5 kg va 3 kg tosh qo\'yildi. Qaysi tomon pastga tushadi?', correctAnswer: '5 kg tomon', options: ['5 kg tomon', '3 kg tomon', 'Teng turadi'], hint: 'Og\'ir tomon pastga tushadi.' },
+      { id: 'm23_q4', prompt: 'Bozordan 3 kg kartoshka va 2 kg piyoz oldik. Jami og\'irlik?', correctAnswer: 5, options: [4, 5, 6], hint: '3 + 2 = 5 kg.' },
+      { id: 'm23_q5', prompt: 'Qushning pati og\'irmi yoki toshmi?', correctAnswer: 'Tosh', options: ['Pat', 'Tosh', 'Teng'], hint: 'Pat juda yengil.' },
+    ]
+  },
+  {
+    id: 'math_24',
+    lessonNumber: 24,
+    title: 'Hajm va Sig\'im (Litr)',
+    subtitle: 'Suyuqliklarni litr (l) bilan o\'lchash',
+    icon: '🧃',
+    color: '#6AA8C8',
+    category: 'O\'lchovlar',
+    explanation: 'Suv, sut, sharbatlar hajmi litr (l) bilan o\'lchanadi. Katta chelakka stakandan ko\'ra ko\'p suv sig\'adi.',
+    stepByStep: 'Misol: 1 litrlik qutidan 5 ta stakanga sharbat quyish mumkin.',
+    questions: [
+      { id: 'm24_q1', prompt: 'Sut va suv qaysi birlikda o\'lchanadi?', correctAnswer: 'Litr (l)', options: ['Metr (m)', 'Litr (l)', 'Gramm'], hint: 'Suyuqliklar litrda.' },
+      { id: 'm24_q2', prompt: 'Qaysi idishga ko\'proq suv sig\'adi: Chelakkami yoki qoshiqqami?', correctAnswer: 'Chelakka', options: ['Chelakka', 'Qoshiqqa', 'Teng'], hint: 'Chelak ancha katta.' },
+      { id: 'm24_q3', prompt: 'Idishda 4 litr sharbat bor edi. Yana 3 litr qo\'shildi. Jami?', correctAnswer: 7, options: [6, 7, 8], hint: '4 + 3 = 7 litr.' },
+      { id: 'm24_q4', prompt: '10 litr suvdan 4 litri ishlatildi. Necha litr qoldi?', correctAnswer: 6, options: [5, 6, 7], hint: '10 - 4 = 6 litr.' },
+      { id: 'm24_q5', prompt: '2 litrli 3 ta idishda jami necha litr suv bor?', correctAnswer: 6, options: [5, 6, 8], hint: '2 + 2 + 2 = 6 litr.' },
+    ]
+  },
+  {
+    id: 'math_25',
+    lessonNumber: 25,
+    title: 'Soat va Vaqt (To\'liq soatlar)',
+    subtitle: 'Katta va kichik mil yordamida vaqtni aniqlash',
+    icon: '⏰',
+    color: '#9A7AA0',
+    category: 'Vaqt',
+    explanation: 'Soatda qisqa mil — soatni, uzun mil — daqiqani ko\'rsatadi. Uzun mil 12 da bo\'lsa, qisqa mil to\'liq soatni ko\'rsatadi: masalan, soat 3:00.',
+    stepByStep: 'Misol: Qisqa mil 5 da, uzun mil 12 da bo\'lsa, soat roppa-rosa 5 bo\'ladi!',
+    questions: [
+      { id: 'm25_q1', prompt: 'Qisqa mil 3 da, uzun mil 12 da bo\'lsa, soat necha?', correctAnswer: 'Soat 3', options: ['Soat 12', 'Soat 3', 'Soat 6'], hint: 'Qisqa mil soatni bildiradi.' },
+      { id: 'm25_q2', prompt: 'Bir kecha-kunduzda necha soat bor?', correctAnswer: 24, options: [12, 24, 60], hint: '24 soat.' },
+      { id: 'm25_q3', prompt: 'Bir soatda necha daqiqa bor?', correctAnswer: 60, options: [30, 60, 100], hint: 'Oltmish daqiqa.' },
+      { id: 'm25_q4', prompt: 'Soat 7:00 edi. 2 soatdan keyin soat necha bo\'ladi?', correctAnswer: 'Soat 9:00', options: ['Soat 8:00', 'Soat 9:00', 'Soat 10:00'], hint: '7 + 2 = 9.' },
+      { id: 'm25_q5', prompt: 'Qisqa mil 12 da, uzun mil ham 12 da tursa, soat necha?', correctAnswer: 'Soat 12:00', options: ['Soat 12:00', 'Soat 6:00', 'Soat 1:00'], hint: 'Ikkala mil ham 12 da.' },
+    ]
+  },
+  {
+    id: 'math_26',
+    lessonNumber: 26,
+    title: 'Kun Tartibi va Vaqt Oraliqlari',
+    subtitle: 'Tong, tush, oqshom va tun tushunchalari',
+    icon: '🌅',
+    color: '#E26D5C',
+    category: 'Vaqt',
+    explanation: 'Ertalab quyosh chiqadi va biz nonushta qilamiz. Tushda dars qilamiz. Oqshomda oila bilan dam olamiz, kechasi uxlaymiz.',
+    stepByStep: 'Misol: Dars 2 soat davom etdi. Bu — vaqt oralig\'idir.',
+    questions: [
+      { id: 'm26_q1', prompt: 'Biz qaysi vaqtda uyqudan uyg\'onib nonushta qilamiz?', correctAnswer: 'Ertalab', options: ['Ertalab', 'Tunda', 'Kechqurun'], hint: 'Tong paytida.' },
+      { id: 'm26_q2', prompt: 'Yulduzlar va oy qachon osmonda ko\'rinadi?', correctAnswer: 'Kechasi', options: ['Kunduzi', 'Kechasi', 'Ertalab'], hint: 'Qorong\'u tushganda.' },
+      { id: 'm26_q3', prompt: 'Ali soat 2 dan 4 gacha dars qildi. U necha soat dars qildi?', correctAnswer: 2, options: [1, 2, 3], hint: '4 dan 2 ni ayiring.' },
+      { id: 'm26_q4', prompt: 'Bugun, kecha va ertaga. Bugundan oldingi kun nima deyiladi?', correctAnswer: 'Kecha', options: ['Ertaga', 'Kecha', 'Indin'], hint: 'O\'tgan kun.' },
+      { id: 'm26_q5', prompt: 'Bugun seshanba bo\'lsa, ertaga qaysi kun?', correctAnswer: 'Chorshanba', options: ['Dushanba', 'Chorshanba', 'Juma'], hint: 'Seshanbadan keyingi kun.' },
+    ]
+  },
+  {
+    id: 'math_27',
+    lessonNumber: 27,
+    title: 'Hafta Kunlari va Fasllar',
+    subtitle: '7 kunlik hafta va 4 faslning matematik tartibi',
+    icon: '🗓️',
+    color: '#F3B749',
+    category: 'Vaqt',
+    explanation: '1 haftada 7 kun bor: Dushanba, Seshanba, Chorshanba, Payshanba, Juma, Shanba, Yakshanba. Yilda 4 fasl va 12 oy bor.',
+    stepByStep: 'Misol: 2 hafta = 7 + 7 = 14 kun.',
+    questions: [
+      { id: 'm27_q1', prompt: 'Bir haftada nechta kun bor?', correctAnswer: 7, options: [5, 6, 7], hint: 'Yetti kun.' },
+      { id: 'm27_q2', prompt: 'Bir yilda nechta fasl bor?', correctAnswer: 4, options: [3, 4, 12], hint: 'Bahor, yoz, kuz, qish.' },
+      { id: 'm27_q3', prompt: 'Bir yilda nechta oy bor?', correctAnswer: 12, options: [10, 11, 12], hint: 'O\'n ikki oy.' },
+      { id: 'm27_q4', prompt: 'Haftaning birinchi kuni qaysi?', correctAnswer: 'Dushanba', options: ['Yakshanba', 'Dushanba', 'Juma'], hint: 'Hafta boshi.' },
+      { id: 'm27_q5', prompt: '3 haftada jami necha kun bor?', correctAnswer: 21, options: [14, 20, 21], hint: '7 + 7 + 7 = 21 kun.' },
+    ]
+  },
+  {
+    id: 'math_28',
+    lessonNumber: 28,
+    title: 'O\'nliklar bilan sanash (10 dan 100 gacha)',
+    subtitle: '10, 20, 30, 40, 50, 60, 70, 80, 90, 100!',
+    icon: '🔟',
+    color: '#6EA888',
+    category: 'O\'nliklar',
+    explanation: 'O\'ntadan qadam tashlab sanaymiz: o\'n, yigirma, o\'ttiz, qirq, ellik, oltmish, yetmish, sakson, to\'qson, yuz!',
+    stepByStep: 'Misol: 3 ta o\'nlik = 30. 5 ta o\'nlik = 50.',
+    questions: [
+      { id: 'm28_q1', prompt: '30 dan keyin o\'nlik bilan sanaganda qaysi son keladi?', correctAnswer: 40, options: [35, 40, 50], hint: 'Qirq.' },
+      { id: 'm28_q2', prompt: '6 ta o\'nlik nechaga teng?', correctAnswer: 60, options: [16, 60, 66], hint: 'Oltmish.' },
+      { id: 'm28_q3', prompt: '50 + 20 yig\'indisi nechaga teng?', correctAnswer: 70, options: [60, 70, 80], hint: '5 o\'nlik + 2 o\'nlik = 7 o\'nlik.' },
+      { id: 'm28_q4', prompt: '80 dan 30 ni ayirsak nechchi qoladi?', correctAnswer: 50, options: [40, 50, 60], hint: '8 o\'nlikdan 3 o\'nlik ketsa 5 o\'nlik.' },
+      { id: 'm28_q5', prompt: '10 ta o\'nlik nechaga teng?', correctAnswer: 100, options: [10, 50, 100], hint: 'Katta yuzlik.' },
+    ]
+  },
+  {
+    id: 'math_29',
+    lessonNumber: 29,
+    title: '20 dan 50 gacha Sonlar',
+    subtitle: 'Ikki xonali sonlarning o\'qilishi va yozilishi',
+    icon: '🔢',
+    color: '#6AA8C8',
+    category: 'Ikki xonali',
+    explanation: 'Masalan, 34 soni — 3 ta o\'nlik va 4 ta birlikdan iborat. O\'qilishi: o\'ttiz to\'rt.',
+    stepByStep: 'Misol: 20 + 7 = 27 (yigirma yetti).',
+    questions: [
+      { id: 'm29_q1', prompt: '4 ta o\'nlik va 5 ta birlik qaysi sonni bildiradi?', correctAnswer: 45, options: [54, 45, 40], hint: 'Qirq besh.' },
+      { id: 'm29_q2', prompt: '38 sonidan oldin qaysi son turadi?', correctAnswer: 37, options: [36, 37, 39], hint: 'O\'ttiz yetti.' },
+      { id: 'm29_q3', prompt: '29 sonidan keyin qaysi son keladi?', correctAnswer: 30, options: [28, 30, 31], hint: 'O\'ttiz.' },
+      { id: 'm29_q4', prompt: 'Qaysi son katta: 42 mi yoki 24 mi?', correctAnswer: 42, options: [24, 42, 'Teng'], hint: '4 ta o\'nlik ko\'p.' },
+      { id: 'm29_q5', prompt: '30 + 9 qaysi sonni hosil qiladi?', correctAnswer: 39, options: [39, 93, 309], hint: 'O\'ttiz to\'qqiz.' },
+    ]
+  },
+  {
+    id: 'math_30',
+    lessonNumber: 30,
+    title: '50 dan 100 gacha Sonlar',
+    subtitle: 'Katta ikki xonali sonlar ustida amallar',
+    icon: '💯',
+    color: '#9A7AA0',
+    category: 'Ikki xonali',
+    explanation: 'Eng katta ikki xonali son — 99. Undan keyin uch xonali son — 100 (yuz) keladi!',
+    stepByStep: 'Misol: 70 + 8 = 78 (yetmish sakkiz). 99 + 1 = 100.',
+    questions: [
+      { id: 'm30_q1', prompt: 'Eng katta ikki xonali son qaysi?', correctAnswer: 99, options: [90, 99, 100], hint: 'Yuzdan bitta oldingi son.' },
+      { id: 'm30_q2', prompt: '8 ta o\'nlik va 2 ta birlik qaysi son?', correctAnswer: 82, options: [28, 82, 80], hint: 'Sakson ikki.' },
+      { id: 'm30_q3', prompt: '90 + 9 nechaga teng?', correctAnswer: 99, options: [99, 909, 100], hint: 'To\'qson to\'qqiz.' },
+      { id: 'm30_q4', prompt: '65 sonida nechta o\'nlik bor?', correctAnswer: 6, options: [5, 6, 60], hint: 'Oltita o\'nlik.' },
+      { id: 'm30_q5', prompt: '99 soniga 1 ni qo\'shsak qaysi son hosil bo\'ladi?', correctAnswer: 100, options: [98, 100, 101], hint: 'Yuz soni.' },
+    ]
+  },
+  {
+    id: 'math_31',
+    lessonNumber: 31,
+    title: 'Yuzlik ichida qo\'shish (Dumaloq sonlar)',
+    subtitle: 'O\'nliklarni o\'nliklarga oson qo\'shish',
+    icon: '🪙',
+    color: '#E26D5C',
+    category: 'Qo\'shish',
+    explanation: '40 + 30 ni hisoblash xuddi 4 + 3 = 7 kabidir, oxiriga nol qo\'yiladi: 70.',
+    stepByStep: 'Misol: 60 + 20 = 80. Oltita o\'nlikka ikkita o\'nlik qo\'shilsa sakkizta o\'nlik bo\'ladi.',
+    questions: [
+      { id: 'm31_q1', prompt: 'Hisoblang: 30 + 40 = ?', correctAnswer: 70, options: [60, 70, 80], hint: '3 + 4 = 7, demak 70.' },
+      { id: 'm31_q2', prompt: 'Hisoblang: 50 + 50 = ?', correctAnswer: 100, options: [90, 100, 105], hint: 'To\'liq yuz.' },
+      { id: 'm31_q3', prompt: 'Hisoblang: 20 + 60 = ?', correctAnswer: 80, options: [70, 80, 90], hint: '2 + 6 = 8.' },
+      { id: 'm31_q4', prompt: 'Hisoblang: 70 + 20 = ?', correctAnswer: 90, options: [80, 90, 100], hint: '7 + 2 = 9.' },
+      { id: 'm31_q5', prompt: 'Hisoblang: 10 + 90 = ?', correctAnswer: 100, options: [95, 100, 110], hint: 'To\'liq yuzlik.' },
+    ]
+  },
+  {
+    id: 'math_32',
+    lessonNumber: 32,
+    title: 'Yuzlik ichida ayirish (Dumaloq sonlar)',
+    subtitle: 'Katta o\'nliklardan o\'nliklarni ayirish',
+    icon: '🎯',
+    color: '#F3B749',
+    category: 'Ayirish',
+    explanation: '80 - 30 ni hisoblash xuddi 8 - 3 = 5 kabi, natijaga nol yozamiz: 50.',
+    stepByStep: 'Misol: 100 - 40 = 60. O\'nta o\'nlikdan to\'rtta o\'nlik ayirilsa oltita o\'nlik qoladi.',
+    questions: [
+      { id: 'm32_q1', prompt: 'Hisoblang: 90 - 40 = ?', correctAnswer: 50, options: [40, 50, 60], hint: '9 dan 4 ni ayirsak 5.' },
+      { id: 'm32_q2', prompt: 'Hisoblang: 100 - 30 = ?', correctAnswer: 70, options: [60, 70, 80], hint: '10 o\'nlikdan 3 o\'nlik ketsa 7 o\'nlik.' },
+      { id: 'm32_q3', prompt: 'Hisoblang: 70 - 50 = ?', correctAnswer: 20, options: [10, 20, 30], hint: '7 - 5 = 2.' },
+      { id: 'm32_q4', prompt: 'Hisoblang: 60 - 20 = ?', correctAnswer: 40, options: [30, 40, 50], hint: '6 - 2 = 4.' },
+      { id: 'm32_q5', prompt: 'Hisoblang: 100 - 50 = ?', correctAnswer: 50, options: [40, 50, 60], hint: 'Yuzning yarmi ellik.' },
+    ]
+  },
+  {
+    id: 'math_33',
+    lessonNumber: 33,
+    title: 'Pullar va Xaridlar (So\'m)',
+    subtitle: 'Pul birliklari va tangalar bilan hisob-kitob',
+    icon: '💵',
+    color: '#6EA888',
+    category: 'Hayotiy',
+    explanation: 'O\'zbekiston pul birligi — so\'m. 1000 so\'m, 2000 so\'m, 5000 so\'mlik kupyuralar bor. Do\'konda narsa xarid qilishda pullar qo\'shiladi va qaytim olinadi.',
+    stepByStep: 'Misol: Muzqaymoq 3000 so\'m, sharbat 2000 so\'m. Jami: 3000 + 2000 = 5000 so\'m.',
+    questions: [
+      { id: 'm33_q1', prompt: 'Daftar 2000 so\'m, qalam 1000 so\'m. Ikkalasi jami qancha?', correctAnswer: 3000, options: [2500, 3000, 4000], hint: '2000 + 1000 = 3000 so\'m.' },
+      { id: 'm33_q2', prompt: 'Sizda 5000 so\'m bor edi. 3000 so\'mga non oldingiz. Qaytim qancha?', correctAnswer: 2000, options: [1000, 2000, 3000], hint: '5000 - 3000 = 2000 so\'m.' },
+      { id: 'm33_q3', prompt: '2000 so\'mlik ikkita muzqaymoq jami necha so\'m bo\'ladi?', correctAnswer: 4000, options: [3000, 4000, 5000], hint: '2000 + 2000 = 4000.' },
+      { id: 'm33_q4', prompt: '10000 so\'mdan 4000 so\'mni ayirsak qancha qoladi?', correctAnswer: 6000, options: [5000, 6000, 7000], hint: 'Olti ming so\'m.' },
+      { id: 'm33_q5', prompt: 'O\'zbekistonning rasmiy pul birligi nima?', correctAnswer: 'So\'m', options: ['Dollar', 'So\'m', 'Yevro'], hint: 'Milliy valyutamiz.' },
+    ]
+  },
+  {
+    id: 'math_34',
+    lessonNumber: 34,
+    title: '2 ga Ko\'paytirish Asoslari',
+    subtitle: 'Bir xil sonlarni ikkitadan guruhlash (×)',
+    icon: '✌️',
+    color: '#6AA8C8',
+    category: 'Ko\'paytirish',
+    explanation: 'Ko\'paytirish — bir xil sonlarni tez qo\'shish demakdir. 2 × 3 degani 3 ta 2 ni qo\'shish: 2 + 2 + 2 = 6!',
+    stepByStep: 'Misol: 2 × 4 = ? 2 + 2 + 2 + 2 = 8. Javob: 8.',
+    questions: [
+      { id: 'm34_q1', prompt: 'Hisoblang: 2 × 2 = ?', correctAnswer: 4, options: [3, 4, 5], hint: '2 + 2 = 4.' },
+      { id: 'm34_q2', prompt: 'Hisoblang: 2 × 3 = ?', correctAnswer: 6, options: [5, 6, 7], hint: 'Uchta ikkining yig\'indisi.' },
+      { id: 'm34_q3', prompt: 'Hisoblang: 2 × 5 = ?', correctAnswer: 10, options: [8, 10, 12], hint: 'Besh juft son — o\'n.' },
+      { id: 'm34_q4', prompt: 'Hisoblang: 2 × 6 = ?', correctAnswer: 12, options: [10, 12, 14], hint: '6 + 6 = 12.' },
+      { id: 'm34_q5', prompt: 'Hisoblang: 2 × 8 = ?', correctAnswer: 16, options: [14, 16, 18], hint: '8 + 8 = 16.' },
+    ]
+  },
+  {
+    id: 'math_35',
+    lessonNumber: 35,
+    title: '3 ga Ko\'paytirish Asoslari',
+    subtitle: 'Uchtalab qadam tashlab sanash',
+    icon: '☘️',
+    color: '#9A7AA0',
+    category: 'Ko\'paytirish',
+    explanation: '3 × 4 degani to\'rtta 3 ni qo\'shish demakdir: 3 + 3 + 3 + 3 = 12.',
+    stepByStep: 'Misol: 3 × 3 = 9. 3 ta yaproqli 3 ta yonjoda jami 9 ta yaproq bor.',
+    questions: [
+      { id: 'm35_q1', prompt: 'Hisoblang: 3 × 2 = ?', correctAnswer: 6, options: [5, 6, 7], hint: '3 + 3 = 6.' },
+      { id: 'm35_q2', prompt: 'Hisoblang: 3 × 3 = ?', correctAnswer: 9, options: [6, 9, 12], hint: '3 + 3 + 3 = 9.' },
+      { id: 'm35_q3', prompt: 'Hisoblang: 3 × 4 = ?', correctAnswer: 12, options: [10, 12, 14], hint: 'To\'rtta uch.' },
+      { id: 'm35_q4', prompt: 'Hisoblang: 3 × 5 = ?', correctAnswer: 15, options: [12, 15, 18], hint: 'Beshta uch — o\'n besh.' },
+      { id: 'm35_q5', prompt: 'Hisoblang: 3 × 1 = ?', correctAnswer: 3, options: [1, 3, 4], hint: 'Har qanday son 1 ga ko\'paysa o\'zi bo\'ladi.' },
+    ]
+  },
+  {
+    id: 'math_36',
+    lessonNumber: 36,
+    title: '4 ga Ko\'paytirish Asoslari',
+    subtitle: 'To\'rttalab guruhlar bilan ishlash',
+    icon: '🍀',
+    color: '#E26D5C',
+    category: 'Ko\'paytirish',
+    explanation: '4 × 3 = 12. Mashinada 4 ta g\'ildirak bor. 3 ta mashinada nechta g\'ildirak bor? 4 × 3 = 12 ta g\'ildirak!',
+    stepByStep: 'Misol: 4 × 2 = 8. 4 + 4 = 8.',
+    questions: [
+      { id: 'm36_q1', prompt: 'Hisoblang: 4 × 2 = ?', correctAnswer: 8, options: [6, 8, 10], hint: 'Ikkita to\'rt.' },
+      { id: 'm36_q2', prompt: 'Hisoblang: 4 × 4 = ?', correctAnswer: 16, options: [12, 16, 20], hint: 'To\'rtta to\'rt — o\'n olti.' },
+      { id: 'm36_q3', prompt: 'Hisoblang: 4 × 5 = ?', correctAnswer: 20, options: [15, 20, 25], hint: 'Yigirma.' },
+      { id: 'm36_q4', prompt: 'Bitta stolda 4 ta oyoq bor. 2 ta stolda nechta oyoq bor?', correctAnswer: 8, options: [6, 8, 10], hint: '4 × 2 = 8.' },
+      { id: 'm36_q5', prompt: 'Hisoblang: 4 × 3 = ?', correctAnswer: 12, options: [10, 12, 14], hint: '4 + 4 + 4 = 12.' },
+    ]
+  },
+  {
+    id: 'math_37',
+    lessonNumber: 37,
+    title: '5 ga Ko\'paytirish Asoslari',
+    subtitle: 'Beshtalab tez hisoblash qoidasi',
+    icon: '🖐️',
+    color: '#F3B749',
+    category: 'Ko\'paytirish',
+    explanation: '5 ga ko\'payganda sonlarning oxiri doim 0 yoki 5 bilan tugaydi: 5, 10, 15, 20, 25, 30...',
+    stepByStep: 'Misol: 5 × 4 = 20. 4 ta qo\'l panjasida 20 ta barmoq bor.',
+    questions: [
+      { id: 'm37_q1', prompt: 'Hisoblang: 5 × 2 = ?', correctAnswer: 10, options: [8, 10, 12], hint: 'Ikkita besh — o\'n.' },
+      { id: 'm37_q2', prompt: 'Hisoblang: 5 × 3 = ?', correctAnswer: 15, options: [10, 15, 20], hint: 'Uchta besh — o\'n besh.' },
+      { id: 'm37_q3', prompt: 'Hisoblang: 5 × 5 = ?', correctAnswer: 25, options: [20, 25, 30], hint: 'Yigirma besh.' },
+      { id: 'm37_q4', prompt: 'Hisoblang: 5 × 6 = ?', correctAnswer: 30, options: [25, 30, 35], hint: 'O\'ttiz.' },
+      { id: 'm37_q5', prompt: 'Hisoblang: 5 × 10 = ?', correctAnswer: 50, options: [40, 50, 60], hint: 'Ellik.' },
+    ]
+  },
+  {
+    id: 'math_38',
+    lessonNumber: 38,
+    title: 'Teng Bo\'lish Tushunchasi (÷)',
+    subtitle: 'Narsalarni do\'stlarga teng taqsimlash',
+    icon: '🤝',
+    color: '#6EA888',
+    category: 'Bo\'lish',
+    explanation: 'Bo\'lish (÷) — bir qancha narsani teng bo\'laklarga bo\'lib berishdir. Masalan, 6 ta olmani 2 bolaga teng bo\'lsak, har biriga 3 tadan tegadi.',
+    stepByStep: 'Misol: 8 ta konfetni 2 kishiga bo\'lsak: 8 ÷ 2 = 4 tadan tegadi.',
+    questions: [
+      { id: 'm38_q1', prompt: '6 ta olma 2 bolaga teng bo\'linsa, har biriga nechtadan tegadi?', correctAnswer: 3, options: [2, 3, 4], hint: '6 ÷ 2 = 3.' },
+      { id: 'm38_q2', prompt: '4 ta shokoladni 2 kishiga teng bo\'lsak nechta bo\'ladi?', correctAnswer: 2, options: [1, 2, 3], hint: '4 ÷ 2 = 2.' },
+      { id: 'm38_q3', prompt: '10 ta koptokni 2 ta qutiga teng solsak nechtadan bo\'ladi?', correctAnswer: 5, options: [4, 5, 6], hint: '10 ÷ 2 = 5.' },
+      { id: 'm38_q4', prompt: '12 ta qalam 3 kishiga teng taqsimlansa, nechtadan tegadi?', correctAnswer: 4, options: [3, 4, 5], hint: '12 ÷ 3 = 4.' },
+      { id: 'm38_q5', prompt: '9 ta gul 3 ta vazaga teng solinsa, har birida nechta gul bo\'ladi?', correctAnswer: 3, options: [2, 3, 4], hint: '9 ÷ 3 = 3.' },
+    ]
+  },
+  {
+    id: 'math_39',
+    lessonNumber: 39,
+    title: '2 ga Bo\'lish Amali (Yarmi)',
+    subtitle: 'Sonning yarmini topish mashqlari',
+    icon: '🌓',
+    color: '#6AA8C8',
+    category: 'Bo\'lish',
+    explanation: 'Sonni 2 ga bo\'lish — uning yarmini topishdir. 10 ning yarmi 5. 16 ning yarmi 8.',
+    stepByStep: 'Misol: 14 ÷ 2 = 7. Chunki 7 + 7 = 14.',
+    questions: [
+      { id: 'm39_q1', prompt: 'Hisoblang: 8 ÷ 2 = ?', correctAnswer: 4, options: [3, 4, 5], hint: 'Sakkizning yarmi.' },
+      { id: 'm39_q2', prompt: 'Hisoblang: 10 ÷ 2 = ?', correctAnswer: 5, options: [4, 5, 6], hint: 'O\'nning yarmi.' },
+      { id: 'm39_q3', prompt: 'Hisoblang: 16 ÷ 2 = ?', correctAnswer: 8, options: [7, 8, 9], hint: 'O\'n oltining yarmi.' },
+      { id: 'm39_q4', prompt: 'Hisoblang: 18 ÷ 2 = ?', correctAnswer: 9, options: [8, 9, 10], hint: 'O\'n sakkizning yarmi.' },
+      { id: 'm39_q5', prompt: 'Hisoblang: 20 ÷ 2 = ?', correctAnswer: 10, options: [9, 10, 11], hint: 'Yigirmaning yarmi.' },
+    ]
+  },
+  {
+    id: 'math_40',
+    lessonNumber: 40,
+    title: '3 va 4 ga Bo\'lish Amallari',
+    subtitle: 'Uchdan bir va to\'rtdan bir qismni topish',
+    icon: '🍕',
+    color: '#9A7AA0',
+    category: 'Bo\'lish',
+    explanation: 'Pitsani 4 ta teng bo\'lakka bo\'lsak, har bir bo\'lak uning to\'rtdan bir qismidir. 12 ÷ 4 = 3.',
+    stepByStep: 'Misol: 15 ÷ 3 = 5. Chunki 5 × 3 = 15.',
+    questions: [
+      { id: 'm40_q1', prompt: 'Hisoblang: 15 ÷ 3 = ?', correctAnswer: 5, options: [4, 5, 6], hint: '15 ni 3 ga bo\'ling.' },
+      { id: 'm40_q2', prompt: 'Hisoblang: 12 ÷ 3 = ?', correctAnswer: 4, options: [3, 4, 5], hint: 'Chunki 4 × 3 = 12.' },
+      { id: 'm40_q3', prompt: 'Hisoblang: 16 ÷ 4 = ?', correctAnswer: 4, options: [3, 4, 5], hint: 'Chunki 4 × 4 = 16.' },
+      { id: 'm40_q4', prompt: 'Hisoblang: 20 ÷ 4 = ?', correctAnswer: 5, options: [4, 5, 6], hint: '20 da 4 nechta bor?' },
+      { id: 'm40_q5', prompt: 'Hisoblang: 21 ÷ 3 = ?', correctAnswer: 7, options: [6, 7, 8], hint: 'Chunki 7 × 3 = 21.' },
+    ]
+  },
+  {
+    id: 'math_41',
+    lessonNumber: 41,
+    title: 'Qoldiqli Bo\'lish Boshlang\'ich Tushunchasi',
+    subtitle: 'Taqsimlangandan so\'ng ortib qolgan son',
+    icon: '🍬',
+    color: '#E26D5C',
+    category: 'Bo\'lish',
+    explanation: '7 ta konfetni 2 kishiga bo\'lsak: har biriga 3 tadan tegadi va 1 ta konfet ortib (qolib) qoladi. Bu — qoldiq!',
+    stepByStep: 'Misol: 7 = 2 × 3 + 1 (qoldiq 1).',
+    questions: [
+      { id: 'm41_q1', prompt: '5 ta olmani 2 kishiga teng bo\'lsak, nechta olma ortib qoladi?', correctAnswer: 1, options: [0, 1, 2], hint: '2 tadan tegadi, 1 ta qoladi.' },
+      { id: 'm41_q2', prompt: '7 ta konfet 3 bolaga bo\'linsa, nechtasi ortib qoladi?', correctAnswer: 1, options: [1, 2, 0], hint: '2 × 3 = 6, 1 ta ortadi.' },
+      { id: 'm41_q3', prompt: '9 ta daftar 2 kishiga bo\'linsa, qoldiq nechchi?', correctAnswer: 1, options: [1, 2, 0], hint: 'To\'rttadan tegadi, bitta ortadi.' },
+      { id: 'm41_q4', prompt: '11 ta qalam 5 kishiga bo\'linsa, qoldiq nechta bo\'ladi?', correctAnswer: 1, options: [1, 2, 3], hint: '10 bo\'linadi, 1 qoladi.' },
+      { id: 'm41_q5', prompt: 'Qoldiq doim bo\'luvchidan kichik bo\'lishi kerakmi?', correctAnswer: 'Ha, albatta', options: ['Ha, albatta', 'Yo\'q', 'Farqi yo\'q'], hint: 'Qoldiq har doim kichik bo\'ladi.' },
+    ]
+  },
+  {
+    id: 'math_42',
+    lessonNumber: 42,
+    title: 'Qavsli Amallar va Tartib',
+    subtitle: 'Avval qavs ichi, keyin ko\'paytirish va qo\'shish',
+    icon: '🧮',
+    color: '#F3B749',
+    category: 'Amallar Tartibi',
+    explanation: 'Misolda qavs bo\'lsa, eng birinchi bo\'lib qavs ichidagi amal bajariladi! Masalan: 2 + (3 × 2) = 2 + 6 = 8.',
+    stepByStep: 'Misol: (4 + 2) × 2 = ? Avval qavs: 4 + 2 = 6. Keyin ko\'paytirish: 6 × 2 = 12.',
+    questions: [
+      { id: 'm42_q1', prompt: 'Hisoblang: (3 + 2) × 2 = ?', correctAnswer: 10, options: [7, 10, 12], hint: 'Avval 3 + 2 = 5, keyin 5 × 2.' },
+      { id: 'm42_q2', prompt: 'Hisoblang: 10 - (2 + 3) = ?', correctAnswer: 5, options: [5, 6, 7], hint: 'Avval 2 + 3 = 5, keyin 10 - 5.' },
+      { id: 'm42_q3', prompt: 'Hisoblang: 2 × (4 + 1) = ?', correctAnswer: 10, options: [9, 10, 11], hint: 'Avval 4 + 1 = 5, keyin 2 × 5.' },
+      { id: 'm42_q4', prompt: 'Hisoblang: (15 - 5) ÷ 2 = ?', correctAnswer: 5, options: [4, 5, 6], hint: '10 ÷ 2 = 5.' },
+      { id: 'm42_q5', prompt: 'Hisoblashda qaysi amal har doim birinchi bajariladi?', correctAnswer: 'Qavs ichidagi amal', options: ['Qavs ichidagi amal', 'Ayirish amali', 'Istalgani'], hint: 'Qavs har doim birinchi.' },
+    ]
+  },
+  {
+    id: 'math_43',
+    lessonNumber: 43,
+    title: 'Mantiqiy Qatorlar va Ketma-ketliklar',
+    subtitle: 'Sehrli sonlar zanjirida qonuniyatni topish',
+    icon: '🚂',
+    color: '#6EA888',
+    category: 'Mantiq',
+    explanation: 'Sonlar ma\'lum qoida bilan o\'sib boradi: 2, 4, 6, 8, ? (har safar 2 tadan qo\'shilmoqda). Keyingi son: 10!',
+    stepByStep: 'Misol: 5, 10, 15, 20, ? Qoida: +5. Keyingi son: 25.',
+    questions: [
+      { id: 'm43_q1', prompt: 'Zanjirni davom ettiring: 2, 4, 6, 8, ?', correctAnswer: 10, options: [9, 10, 12], hint: 'Ikkitalab o\'smoqda.' },
+      { id: 'm43_q2', prompt: 'Zanjirni davom ettiring: 3, 6, 9, 12, ?', correctAnswer: 15, options: [14, 15, 16], hint: 'Uchtalab o\'smoqda.' },
+      { id: 'm43_q3', prompt: 'Zanjirni davom ettiring: 10, 20, 30, 40, ?', correctAnswer: 50, options: [45, 50, 60], hint: 'O\'ntalab o\'smoqda.' },
+      { id: 'm43_q4', prompt: 'Kamayib boruvchi zanjir: 20, 18, 16, 14, ?', correctAnswer: 12, options: [12, 13, 10], hint: 'Ikkita-ikkita kamaymoqda.' },
+      { id: 'm43_q5', prompt: 'Zanjirni davom ettiring: 1, 4, 7, 10, ?', correctAnswer: 13, options: [11, 12, 13], hint: 'Uchtadan qo\'shilmoqda.' },
+    ]
+  },
+  {
+    id: 'math_44',
+    lessonNumber: 44,
+    title: 'Sehrli Kvadratlar va Jumboqlar',
+    subtitle: 'Satr va ustunlar yig\'indisini tenglashtirish',
+    icon: '💎',
+    color: '#6AA8C8',
+    category: 'Mantiq',
+    explanation: 'Sehrli kvadratda har bir qatordagi sonlar yig\'indisi bir xil bo\'ladi. Masalan, barcha satrlar 15 bo\'lishi kerak.',
+    stepByStep: 'Misol: 4 + ? + 2 = 10. Bo\'sh joyga 4 qo\'yiladi (4 + 4 + 2 = 10).',
+    questions: [
+      { id: 'm44_q1', prompt: 'Satr yig\'indisi 10 bo\'lishi kerak: 3 + 5 + ? = 10', correctAnswer: 2, options: [1, 2, 3], hint: '3 + 5 = 8. 10 gacha 2 yetmaydi.' },
+      { id: 'm44_q2', prompt: 'Satr yig\'indisi 12 bo\'lishi kerak: 4 + ? + 4 = 12', correctAnswer: 4, options: [3, 4, 5], hint: '4 + 4 = 8. 12 - 8 = 4.' },
+      { id: 'm44_q3', prompt: 'Satr yig\'indisi 15 bo\'lishi kerak: 5 + 5 + ? = 15', correctAnswer: 5, options: [4, 5, 6], hint: 'Uchinchi son ham besh.' },
+      { id: 'm44_q4', prompt: '7 + ? + 1 = 10 bo\'sh joydagi sonni toping:', correctAnswer: 2, options: [1, 2, 3], hint: '7 + 1 = 8. 10 - 8 = 2.' },
+      { id: 'm44_q5', prompt: '6 + 2 + ? = 14 bo\'sh joydagi sonni toping:', correctAnswer: 6, options: [5, 6, 7], hint: '8 ga 6 qo\'shilsa 14 bo\'ladi.' },
+    ]
+  },
+  {
+    id: 'math_45',
+    lessonNumber: 45,
+    title: 'Ikki Amalli Matnli Masalalar',
+    subtitle: 'Avval qo\'shib, so\'ng ayirish yoki aksincha',
+    icon: '🏆',
+    color: '#9A7AA0',
+    category: 'Matnli Masala',
+    explanation: 'Ba\'zi masalalar ikki bosqichda yechiladi. Masalan: Salimda 5 ta olma bor edi, yana 3 ta oldi (8 bo\'ldi). So\'ng 2 tasini yedi: 8 - 2 = 6 ta qoldi.',
+    stepByStep: 'Misol: (5 + 3) - 2 = 6 ta olma.',
+    questions: [
+      { id: 'm45_q1', prompt: 'Savatda 10 ta olma bor edi. Yana 5 ta solindi, so\'ng 3 tasi olindi. Nechta qoldi?', correctAnswer: 12, options: [11, 12, 13], hint: '10 + 5 = 15. 15 - 3 = 12.' },
+      { id: 'm45_q2', prompt: 'Bekatda avtobusda 12 kishi bor edi. 4 kishi tushdi, 6 kishi chiqdi. Hozir nechta?', correctAnswer: 14, options: [13, 14, 15], hint: '12 - 4 = 8. 8 + 6 = 14.' },
+      { id: 'm45_q3', prompt: 'Nilufar 8 ta gul terdi, singlisi 4 ta terdi. 2 ta gulni onasiga berishdi. Qolgani?', correctAnswer: 10, options: [9, 10, 11], hint: '8 + 4 = 12. 12 - 2 = 10.' },
+      { id: 'm45_q4', prompt: 'Azizda 20 ta yong\'oq bor edi. 5 tasini do\'stiga berdi, 3 tasini o\'zi yedi. Qolgani?', correctAnswer: 12, options: [11, 12, 13], hint: '20 - 5 = 15. 15 - 3 = 12.' },
+      { id: 'm45_q5', prompt: 'Do\'konda 15 ta koptok bor edi. 5 tasi sotildi, yana 10 ta keltirildi. Jami?', correctAnswer: 20, options: [18, 20, 22], hint: '15 - 5 = 10. 10 + 10 = 20.' },
+    ]
+  },
+  {
+    id: 'math_46',
+    lessonNumber: 46,
+    title: 'Tezkor Zehn va Hisob Mashqlari',
+    subtitle: 'Kallada tez va to\'g\'ri hisoblash sirlari',
+    icon: '⚡️',
+    color: '#E26D5C',
+    category: 'Zehn',
+    explanation: 'Tez hisoblash uchun sonlarni o\'nliklarga yaxlitlash qulay: 19 + 7 = 20 + 6 = 26!',
+    stepByStep: 'Misol: 28 + 5 = 30 + 3 = 33.',
+    questions: [
+      { id: 'm46_q1', prompt: 'Tezkor hisoblang: 25 + 5 = ?', correctAnswer: 30, options: [29, 30, 35], hint: 'Dumaloq o\'ttiz.' },
+      { id: 'm46_q2', prompt: 'Tezkor hisoblang: 40 - 5 = ?', correctAnswer: 35, options: [30, 35, 36], hint: 'O\'ttiz besh.' },
+      { id: 'm46_q3', prompt: 'Tezkor hisoblang: 15 + 15 = ?', correctAnswer: 30, options: [25, 30, 35], hint: 'O\'ttiz.' },
+      { id: 'm46_q4', prompt: 'Tezkor hisoblang: 50 - 25 = ?', correctAnswer: 25, options: [20, 25, 30], hint: 'Ellikning yarmi yigirma besh.' },
+      { id: 'm46_q5', prompt: 'Tezkor hisoblang: 33 + 7 = ?', correctAnswer: 40, options: [39, 40, 41], hint: 'Qirq.' },
+    ]
+  },
+  {
+    id: 'math_47',
+    lessonNumber: 47,
+    title: 'Perimetr Tushunchasi',
+    subtitle: 'Shaklning barcha tomonlari uzunliklari yig\'indisi',
+    icon: '📐',
+    color: '#F3B749',
+    category: 'Geometriya',
+    explanation: 'Perimetr — bu shakl atrofini aylanib chiqqandagi barcha tomonlarining qo\'shilgan uzunligidir.',
+    stepByStep: 'Misol: Uchburchak tomonlari 3 sm, 4 sm va 5 sm. Perimetr = 3 + 4 + 5 = 12 sm.',
+    questions: [
+      { id: 'm47_q1', prompt: 'Tomonlari 3 sm, 3 sm, 3 sm bo\'lgan uchburchak perimetri?', correctAnswer: 9, options: [6, 9, 12], hint: '3 + 3 + 3 = 9 sm.' },
+      { id: 'm47_q2', prompt: 'Tomoni 4 sm bo\'lgan kvadratning perimetri qancha?', correctAnswer: 16, options: [12, 16, 20], hint: '4 + 4 + 4 + 4 = 16 sm.' },
+      { id: 'm47_q3', prompt: 'Tomoni 5 sm bo\'lgan kvadratning perimetri?', correctAnswer: 20, options: [15, 20, 25], hint: '4 ta 5 sm tomon = 20 sm.' },
+      { id: 'm47_q4', prompt: 'Tomonlari 2 sm va 5 sm bo\'lgan to\'g\'ri to\'rtburchak perimetri?', correctAnswer: 14, options: [10, 14, 16], hint: '2 + 5 + 2 + 5 = 14 sm.' },
+      { id: 'm47_q5', prompt: 'Perimetr nima?', correctAnswer: 'Barcha tomonlar yig\'indisi', options: ['Barcha tomonlar yig\'indisi', 'Faqat bitta tomon', 'Shaklning og\'irligi'], hint: 'Atrofidagi hamma tomonlar.' },
+    ]
+  },
+  {
+    id: 'math_48',
+    lessonNumber: 48,
+    title: 'Simmetriya va Ko\'zgu Aksi',
+    subtitle: 'Shaklning o\'ng va chap yarmi bir xilligi',
+    icon: '🦋',
+    color: '#6EA888',
+    category: 'Geometriya',
+    explanation: 'Kapalakning o\'ng qanoti va chap qanoti bir xil bo\'ladi. O\'rtadan buklaganda ustma-ust tushadigan shakllar simmetrik deyiladi.',
+    stepByStep: 'Misol: Yurak shaklini o\'rtasidan chiziq tortsak, ikkala tomoni bir xil ko\'rinadi.',
+    questions: [
+      { id: 'm48_q1', prompt: 'Kapalakning ikkala qanoti bir xilmi?', correctAnswer: 'Ha, simmetrik', options: ['Ha, simmetrik', 'Yo\'q, har xil'], hint: 'Ikkala tomoni bir xil naqshli.' },
+      { id: 'm48_q2', prompt: 'Doirani o\'rtasidan teng bo\'lsak, nima hosil bo\'ladi?', correctAnswer: '2 ta yarim doira', options: ['2 ta kvadrat', '2 ta yarim doira', 'Uchburchak'], hint: 'Yarimta doiralar.' },
+      { id: 'm48_q3', prompt: 'Ko\'zguga qaraganingizda nima ko\'rinadi?', correctAnswer: 'O\'zingizning aksingiz', options: ['O\'zingizning aksingiz', 'Boshqa odam', 'Hech narsa'], hint: 'Ko\'zgu aksi.' },
+      { id: 'm48_q4', prompt: 'Qaysi harf vertikal simmetrik: A mi yoki F mi?', correctAnswer: 'A harfi', options: ['A harfi', 'F harfi'], hint: 'A harfining ikki tomoni bir xil.' },
+      { id: 'm48_q5', prompt: 'Kvadratni o\'rtasidan buklasak ikkala tomon ustma-ust tushadimi?', correctAnswer: 'Ha', options: ['Ha', 'Yo\'q'], hint: 'Kvadrat simmetrik shakl.' },
+    ]
+  },
+  {
+    id: 'math_49',
+    lessonNumber: 49,
+    title: 'Kasrlar Boshlang\'ich Tushunchasi',
+    subtitle: 'Butun, yarim (1/2) va chorak (1/4)',
+    icon: '🥧',
+    color: '#6AA8C8',
+    category: 'Kasrlar',
+    explanation: 'Butun olmani ikkiga bo\'lsak — har biri yarim (1/2) bo\'ladi. To\'rtga bo\'lsak — chorak (1/4) bo\'ladi.',
+    stepByStep: 'Misol: 1 ta butun pissa = 2 ta yarimta pissa = 4 ta chorak pissa.',
+    questions: [
+      { id: 'm49_q1', prompt: 'Butun olmada nechta yarimta olma bor?', correctAnswer: 2, options: [2, 3, 4], hint: 'Ikkita yarimta bitta butun bo\'ladi.' },
+      { id: 'm49_q2', prompt: 'Bir butun narsada nechta chorak bor?', correctAnswer: 4, options: [2, 3, 4], hint: 'To\'rtta chorak bo\'lak.' },
+      { id: 'm49_q3', prompt: '2 ta yarimta non jami nechta butun non bo\'ladi?', correctAnswer: 1, options: [1, 2, 4], hint: 'Bitta butun non.' },
+      { id: 'm49_q4', prompt: '1/2 kasri nimaniki bildiradi?', correctAnswer: 'Yarim', options: ['Chorak', 'Yarim', 'Butun'], hint: 'Ikkidan bir qism — yarim.' },
+      { id: 'm49_q5', prompt: '4 ta chorak olma birlashtirilsa nima hosil bo\'ladi?', correctAnswer: '1 ta butun olma', options: ['1 ta butun olma', '2 ta olma', 'Yarim olma'], hint: 'To\'rtta chorak bitta butun.' },
+    ]
+  },
+  {
+    id: 'math_50',
+    lessonNumber: 50,
+    title: 'Katta Matematika Viktorinasi',
+    subtitle: 'Barcha 50 ta dars bo\'yicha oltin chempionlik sinovi!',
+    icon: '👑',
+    color: '#F3B749',
+    category: 'Yakuniy',
+    explanation: 'Tabriklaymiz! Siz 50-darsga yetib keldingiz. Barcha o\'rgangan bilimlaringizni sinab, Matematika Qasri Chempioni unvoniga ega bo\'ling!',
+    stepByStep: 'Misol: Sanash, qo\'shish, ayirish, ko\'paytirish va mantiqiy savollarni diqqat bilan yeching.',
+    questions: [
+      { id: 'm50_q1', prompt: 'Hisoblang: 15 + 15 = ?', correctAnswer: 30, options: [25, 30, 35], hint: 'O\'ttiz.' },
+      { id: 'm50_q2', prompt: 'Hisoblang: 5 × 4 = ?', correctAnswer: 20, options: [16, 20, 24], hint: 'Yigirma.' },
+      { id: 'm50_q3', prompt: 'Hisoblang: 18 ÷ 2 = ?', correctAnswer: 9, options: [8, 9, 10], hint: 'O\'n sakkizning yarmi.' },
+      { id: 'm50_q4', prompt: 'Kvadratning nechta tomoni bor?', correctAnswer: 4, options: [3, 4, 5], hint: 'To\'rtta teng tomon.' },
+      { id: 'm50_q5', prompt: '50 + 50 nechaga teng?', correctAnswer: 100, options: [90, 100, 110], hint: 'Yuz ball!' },
+    ]
+  }
+];
+
+// Helper to get lessons by age or full list
 export const MATH_TOPICS = {
-  '5-6': [
-    {
-      id: 'count_visual',
-      title: 'Meva va Yulduzlarni Sanash',
-      subtitle: '1 dan 10 gacha quvnoq sanash',
-      icon: '🍎',
-      color: '#E26D5C',
-      type: 'counting',
-      questionsCount: 6,
-    },
-    {
-      id: 'compare_quantities',
-      title: 'Qaysi biri ko\'p?',
-      subtitle: 'Katta va kichik to\'plamlarni taqqoslash',
-      icon: '⚖️',
-      color: '#F3B749',
-      type: 'comparison',
-      questionsCount: 6,
-    },
-    {
-      id: 'simple_add_visual',
-      title: 'Birga Qo\'shamiz (1-5)',
-      subtitle: 'Rasmlar yordamida qo\'shish',
-      icon: '➕',
-      color: '#6EA888',
-      type: 'visual_add',
-      questionsCount: 6,
-    }
-  ],
-  '7-8': [
-    {
-      id: 'add_sub_20',
-      title: 'Qo\'shish va Ayirish (1-20)',
-      subtitle: 'Tezkor hisoblash mashqlari',
-      icon: '🎯',
-      color: '#6AA8C8',
-      type: 'arithmetic_20',
-      questionsCount: 8,
-    },
-    {
-      id: 'missing_number',
-      title: 'Sehrli Bo\'sh Katak',
-      subtitle: 'Tushib qolgan raqamni toping (8 + ? = 15)',
-      icon: '🔍',
-      color: '#9A7AA0',
-      type: 'missing_number',
-      questionsCount: 8,
-    },
-    {
-      id: 'number_patterns',
-      title: 'Ketma-ketliklar',
-      subtitle: 'Sehrli sonlar zanjirini davom ettir',
-      icon: '🚂',
-      color: '#E26D5C',
-      type: 'patterns',
-      questionsCount: 8,
-    }
-  ],
-  '9-10': [
-    {
-      id: 'multiplication_master',
-      title: 'Ko\'paytirish Jadvali',
-      subtitle: '2 dan 9 gacha jadvallar',
-      icon: '⚡',
-      color: '#F3B749',
-      type: 'multiplication',
-      questionsCount: 10,
-    },
-    {
-      id: 'division_explorer',
-      title: 'Bo\'lish Sarguzashti',
-      subtitle: 'Teng bo\'lish va qoldiqli hisob',
-      icon: '🍕',
-      color: '#6EA888',
-      type: 'division',
-      questionsCount: 10,
-    },
-    {
-      id: 'word_problems',
-      title: 'Mantiqiy Masalalar',
-      subtitle: 'Matnli qiziqarli topishmoqlar',
-      icon: '🧠',
-      color: '#6AA8C8',
-      type: 'word_problem',
-      questionsCount: 6,
-    }
-  ]
+  '5-6': ALL_MATH_LESSONS,
+  '7-8': ALL_MATH_LESSONS,
+  '9-10': ALL_MATH_LESSONS,
 };
 
-// Generates dynamic question sets for any topic and age
 export function generateMathQuestions(topicId, ageGroup = '7-8') {
-  const emojis = ['🍎', '⭐️', '🐰', '🎈', '🐠', '🍓', '🥕', '🐱', '⚽️', '🌸'];
-
-  switch (topicId) {
-    case 'count_visual': {
-      const questions = [];
-      for (let i = 0; i < 6; i++) {
-        const count = Math.floor(Math.random() * 7) + 2; // 2 to 8
-        const emoji = emojis[i % emojis.length];
-        const wrong1 = count + (Math.random() > 0.5 ? 1 : -1);
-        const wrong2 = count + (Math.random() > 0.5 ? 2 : -2);
-        const options = Array.from(new Set([count, wrong1 > 0 ? wrong1 : count + 3, wrong2 > 0 && wrong2 !== wrong1 ? wrong2 : count + 4])).slice(0, 3);
-        while (options.length < 3) options.push(options[0] + options.length + 1);
-        options.sort(() => Math.random() - 0.5);
-
-        questions.push({
-          id: `cv_${i}`,
-          prompt: `Savatchada nechta ${emoji} bor?`,
-          visualItems: Array(count).fill(emoji),
-          correctAnswer: count,
-          options: options,
-          hint: 'Har birini birma-bir barmog\'ingiz bilan sanang!'
-        });
-      }
-      return questions;
-    }
-
-    case 'compare_quantities': {
-      const questions = [];
-      for (let i = 0; i < 6; i++) {
-        const countA = Math.floor(Math.random() * 6) + 1;
-        let countB = Math.floor(Math.random() * 6) + 1;
-        while (countB === countA) countB = Math.floor(Math.random() * 6) + 1;
-
-        const isLeftMore = countA > countB;
-        questions.push({
-          id: `cq_${i}`,
-          prompt: 'Qaysi tomonda narsalar KO\'PROQ?',
-          leftItems: Array(countA).fill('🍎'),
-          rightItems: Array(countB).fill('🍓'),
-          correctAnswer: isLeftMore ? 'Chap tomon' : 'O\'ng tomon',
-          options: ['Chap tomon', 'O\'ng tomon'],
-          hint: 'Ikkala tomonni sanab, qaysi biri ko\'p ekanini toping!'
-        });
-      }
-      return questions;
-    }
-
-    case 'simple_add_visual': {
-      const questions = [];
-      for (let i = 0; i < 6; i++) {
-        const a = Math.floor(Math.random() * 4) + 1;
-        const b = Math.floor(Math.random() * 4) + 1;
-        const ans = a + b;
-        const emoji = emojis[i % emojis.length];
-        const options = Array.from(new Set([ans, ans + 1, Math.max(1, ans - 1)])).sort(() => Math.random() - 0.5);
-
-        questions.push({
-          id: `sav_${i}`,
-          prompt: `${a} + ${b} = ?`,
-          leftItems: Array(a).fill(emoji),
-          rightItems: Array(b).fill(emoji),
-          correctAnswer: ans,
-          options: options,
-          hint: 'Barcha narsalarni birga qo\'shib sanang!'
-        });
-      }
-      return questions;
-    }
-
-    case 'add_sub_20': {
-      const questions = [];
-      for (let i = 0; i < 8; i++) {
-        const isAdd = Math.random() > 0.4;
-        let a, b, ans, op;
-        if (isAdd) {
-          a = Math.floor(Math.random() * 12) + 3;
-          b = Math.floor(Math.random() * 9) + 2;
-          ans = a + b;
-          op = '+';
-        } else {
-          a = Math.floor(Math.random() * 15) + 6;
-          b = Math.floor(Math.random() * (a - 2)) + 1;
-          ans = a - b;
-          op = '-';
-        }
-        const options = Array.from(new Set([ans, ans + 2, Math.max(1, ans - 2), ans + 1])).slice(0, 4).sort(() => Math.random() - 0.5);
-        questions.push({
-          id: `as20_${i}`,
-          prompt: `${a} ${op} ${b} = ?`,
-          equation: `${a} ${op} ${b}`,
-          correctAnswer: ans,
-          options: options,
-          hint: `${a} ga ${b} ni ${isAdd ? 'qo\'shing' : 'ayiring'}.`
-        });
-      }
-      return questions;
-    }
-
-    case 'missing_number': {
-      const questions = [];
-      for (let i = 0; i < 8; i++) {
-        const a = Math.floor(Math.random() * 10) + 2;
-        const missing = Math.floor(Math.random() * 8) + 2;
-        const sum = a + missing;
-        const options = Array.from(new Set([missing, missing + 1, Math.max(1, missing - 1), missing + 3])).slice(0, 4).sort(() => Math.random() - 0.5);
-
-        questions.push({
-          id: `mn_${i}`,
-          prompt: `${a} + ❓ = ${sum}`,
-          equation: `${a} + [ ? ] = ${sum}`,
-          correctAnswer: missing,
-          options: options,
-          hint: `${sum} dan ${a} ni ayirib ko'ring!`
-        });
-      }
-      return questions;
-    }
-
-    case 'number_patterns': {
-      const questions = [];
-      for (let i = 0; i < 8; i++) {
-        const step = Math.floor(Math.random() * 3) + 2; // 2, 3, 4
-        const start = Math.floor(Math.random() * 5) + 1;
-        const seq = [start, start + step, start + step * 2, start + step * 3];
-        const next = start + step * 4;
-        const options = Array.from(new Set([next, next + 2, next - 2, next + step + 1])).slice(0, 4).sort(() => Math.random() - 0.5);
-
-        questions.push({
-          id: `pat_${i}`,
-          prompt: `Keyingi sonni toping: ${seq.join(', ')}, ❓`,
-          sequence: seq,
-          correctAnswer: next,
-          options: options,
-          hint: `Har safar sonlar ${step} taga oshmoqda!`
-        });
-      }
-      return questions;
-    }
-
-    case 'multiplication_master': {
-      const questions = [];
-      for (let i = 0; i < 10; i++) {
-        const a = Math.floor(Math.random() * 8) + 2;
-        const b = Math.floor(Math.random() * 8) + 2;
-        const ans = a * b;
-        const options = Array.from(new Set([ans, ans + a, ans - b > 0 ? ans - b : ans + 4, ans + 2])).slice(0, 4).sort(() => Math.random() - 0.5);
-
-        questions.push({
-          id: `mult_${i}`,
-          prompt: `${a} × ${b} = ?`,
-          equation: `${a} × ${b}`,
-          correctAnswer: ans,
-          options: options,
-          hint: `${a} ta ${b} ni birga qo'shing.`
-        });
-      }
-      return questions;
-    }
-
-    case 'division_explorer': {
-      const questions = [];
-      for (let i = 0; i < 10; i++) {
-        const divisor = Math.floor(Math.random() * 7) + 2;
-        const quotient = Math.floor(Math.random() * 7) + 2;
-        const dividend = divisor * quotient;
-        const options = Array.from(new Set([quotient, quotient + 1, Math.max(1, quotient - 1), quotient + 2])).slice(0, 4).sort(() => Math.random() - 0.5);
-
-        questions.push({
-          id: `div_${i}`,
-          prompt: `${dividend} ÷ ${divisor} = ?`,
-          equation: `${dividend} ÷ ${divisor}`,
-          correctAnswer: quotient,
-          options: options,
-          hint: `${divisor} ni nechiga ko'paytirsak ${dividend} bo'ladi?`
-        });
-      }
-      return questions;
-    }
-
-    case 'word_problem': {
-      const storyPool = [
-        {
-          text: "Jasur bog'dan 6 ta qizil olma va 8 ta sariq olma terdi. Jasur jami nechta olma terdi?",
-          ans: 14,
-          options: [12, 14, 15, 16],
-          hint: "6 + 8 = ?"
-        },
-        {
-          text: "Malikada 20 ta rangli qalam bor edi. U do'stiga 7 tasini sovg'a qildi. Malikada nechta qalam qoldi?",
-          ans: 13,
-          options: [11, 13, 14, 15],
-          hint: "20 - 7 = ?"
-        },
-        {
-          text: "Har bir qutida 4 tadan shokolad bor. 5 ta qutida jami nechta shokolad bo'ladi?",
-          ans: 20,
-          options: [16, 18, 20, 24],
-          hint: "5 × 4 = ?"
-        },
-        {
-          text: "18 ta konfetni 3 nafar bolaga teng taqsimlab berishdi. Har bir bola nechtadan konfet oldi?",
-          ans: 6,
-          options: [5, 6, 7, 8],
-          hint: "18 ÷ 3 = ?"
-        },
-        {
-          text: "Daraxtda 9 ta qush o'tirgan edi. Yana 5 ta qush uchib keldi, keyin 3 tasi uchib ketdi. Daraxtda nechta qush qoldi?",
-          ans: 11,
-          options: [10, 11, 12, 14],
-          hint: "9 + 5 - 3 = ?"
-        },
-        {
-          text: "Avtobusda 15 nafar yo'lovchi bor edi. Bekatda 6 kishi tushdi va 4 kishi chiqdi. Avtobusda nechta yo'lovchi bo'ldi?",
-          ans: 13,
-          options: [12, 13, 14, 15],
-          hint: "15 - 6 + 4 = ?"
-        }
-      ];
-
-      return storyPool.map((s, idx) => ({
-        id: `wp_${idx}`,
-        prompt: s.text,
-        isStory: true,
-        correctAnswer: s.ans,
-        options: s.options.sort(() => Math.random() - 0.5),
-        hint: s.hint
-      }));
-    }
-
-    default:
-      return [];
+  const found = ALL_MATH_LESSONS.find(l => l.id === topicId);
+  if (found && found.questions && found.questions.length > 0) {
+    return found.questions;
   }
+  // Fallback default
+  return ALL_MATH_LESSONS[0].questions;
 }

@@ -33,7 +33,7 @@ export default function StorybookWorldMap({
       badge: 'Alifbo & Tovushlar',
       mascotQuote: 'Alifbo o\'rmonida yangi harflarni birga kashf qilamiz!',
       completedCount: activeChild?.completedLessons?.alphabet?.length || 0,
-      totalCount: 29,
+      totalCount: 50,
     },
     {
       id: 'math',
@@ -45,7 +45,7 @@ export default function StorybookWorldMap({
       badge: 'Matematika & Mantiq',
       mascotQuote: 'Qasrdagi sehrli raqamlar jumboqlarini yechamiz!',
       completedCount: activeChild?.completedLessons?.math?.length || 0,
-      totalCount: 3,
+      totalCount: 50,
     },
     {
       id: 'stories',
@@ -57,43 +57,13 @@ export default function StorybookWorldMap({
       badge: 'Ertaklar & O\'qish',
       mascotQuote: 'Ajoyib ertaklar bizni yangi olamlarga yetaklaydi!',
       completedCount: activeChild?.completedLessons?.stories?.length || 0,
-      totalCount: 3,
-    },
-    {
-      id: 'badges',
-      title: 'Yutuqlar Xazinasi',
-      subtitle: 'To\'plangan medallar va maxsus kuboklar',
-      icon: '🏆🌟',
-      color: '#9A7AA0',
-      bgCard: '#F4EEF6',
-      badge: 'Mukofotlar',
-      isModal: true,
-      onClick: onOpenBadges,
-      completedCount: activeChild?.unlockedBadges?.length || 1,
-      totalCount: 10,
-    },
-    {
-      id: 'shop',
-      title: 'Doni Kiyimlar Do\'koni',
-      subtitle: 'Yulduzli tangalar bilan Doniga kiyimlar oling',
-      icon: '🛍️🎩',
-      color: '#F3B749',
-      bgCard: '#FEF6E4',
-      badge: 'Do\'kon & Tangalar',
-      isModal: true,
-      onClick: onOpenShop,
-      completedCount: activeChild?.inventory?.length || 0,
-      totalCount: 6,
+      totalCount: 50,
     }
   ];
 
   const handleZoneClick = (zone) => {
     audio.playPop();
-    if (zone.isModal) {
-      if (zone.onClick) zone.onClick();
-    } else {
-      onNavigateTo(zone.id);
-    }
+    onNavigateTo(zone.id);
   };
 
   return (

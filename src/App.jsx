@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { storageService } from './services/storageService';
 import { audio } from './services/audioService';
 
 // Auth Screen (Displayed first before child dashboard)
 import AuthScreen from './components/auth/AuthScreen';
 
-// Navigation & Modals
+// Navigation & Views
 import HeaderNav from './components/navbar/HeaderNav';
 import FullscreenBanner from './components/common/FullscreenBanner';
 import StorybookWorldMap from './components/world/StorybookWorldMap';
 import MathAdventureView from './components/math/MathAdventureView';
 import AlphabetForestView from './components/alphabet/AlphabetForestView';
 import StoryReaderView from './components/reading/StoryReaderView';
-import ParentGateModal from './components/parent/ParentGateModal';
-import ParentDashboard from './components/parent/ParentDashboard';
+import UserProfileView from './components/profile/UserProfileView';
 import ChildProfileSelector from './components/auth/ChildProfileSelector';
 import BadgesModal from './components/rewards/BadgesModal';
 import StickerShopModal from './components/rewards/StickerShopModal';
@@ -26,11 +25,9 @@ export default function App() {
   const [childrenList, setChildrenList] = useState([]);
   const [activeChildId, setActiveChildId] = useState('');
   const [activeChild, setActiveChild] = useState(null);
-  const [currentView, setCurrentView] = useState('world'); // 'world', 'math', 'alphabet', 'stories'
+  const [currentView, setCurrentView] = useState('world'); // 'world', 'math', 'alphabet', 'stories', 'profile'
 
   // Modals State
-  const [isParentGateOpen, setIsParentGateOpen] = useState(false);
-  const [isParentDashboardOpen, setIsParentDashboardOpen] = useState(false);
   const [isProfileSelectorOpen, setIsProfileSelectorOpen] = useState(false);
   const [isBadgesModalOpen, setIsBadgesModalOpen] = useState(false);
   const [isShopModalOpen, setIsShopModalOpen] = useState(false);
@@ -39,26 +36,73 @@ export default function App() {
   // Time tracking
   const [sessionStartTime, setSessionStartTime] = useState(Date.now());
 
-  // Load Initial Data from localStorage
+  const refreshChildData = useCallback(() => {
+    const freshChildren = storageService.getChildren();
+    const activeId = storageService.getActiveChildId();
+    setChildrenList(freshChildren);
+    setActiveChildId(activeId);
+    const current = freshChildren.find(c => c.id === activeId) || freshChildren[0] || null;
+    setActiveChild(current);
+  }, []);
+
+  // Check 15-day inactivity session rule & sync on mount
   useEffect(() => {
-    refreshChildData();
+    async function verifySession() {
+      if (storageService.isUserAuthenticated()) {
+        try {
+          const session = await storageService.checkServerSession();
+          if (session && session.user) {
+            setIsAuthenticated(true);
+            refreshChildData();
+          } else {
+            setIsAuthenticated(false);
+          }
+        } catch (err) {
+          console.warn('Session verification notice:', err);
+          setIsAuthenticated(storageService.isUserAuthenticated());
+          refreshChildData();
+        }
+      } else {
+        setIsAuthenticated(false);
+      }
+    }
+
+    verifySession();
+
+    // User activity listener to keep sliding 15-day activity updated
+    const handleUserActivity = () => {
+      if (storageService.isUserAuthenticated()) {
+        storageService.updateSessionActivity();
+      }
+    };
+    window.addEventListener('click', handleUserActivity);
+    window.addEventListener('keydown', handleUserActivity);
+
+    // Periodic 15-day inactivity checker (every 30 seconds)
+    const intervalId = setInterval(() => {
+      if (storageService.isUserAuthenticated()) {
+        const stillValid = storageService.isUserAuthenticated();
+        if (!stillValid) {
+          setIsAuthenticated(false);
+          audio.playWrong();
+          alert("Sessiyangiz 15 kunlik nofaollikdan so'ng tugadi. Qaytadan kiring.");
+        }
+      }
+    }, 30000);
 
     // Fullscreen change listener
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
     document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
 
-  const refreshChildData = () => {
-    const freshChildren = storageService.getChildren();
-    const activeId = storageService.getActiveChildId();
-    setChildrenList(freshChildren);
-    setActiveChildId(activeId);
-    const current = freshChildren.find(c => c.id === activeId) || freshChildren[0];
-    setActiveChild(current);
-  };
+    return () => {
+      window.removeEventListener('click', handleUserActivity);
+      window.removeEventListener('keydown', handleUserActivity);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      clearInterval(intervalId);
+    };
+  }, [refreshChildData]);
 
   // Auth Success Handler
   const handleAuthSuccess = () => {
@@ -67,12 +111,12 @@ export default function App() {
     setCurrentView('world');
   };
 
-  // Logout Handler
+  // Logout Handler (Clears backend session and local cache, returns to AuthScreen)
   const handleLogout = () => {
     storageService.logout();
     setIsAuthenticated(false);
-    setIsParentDashboardOpen(false);
-    setIsParentGateOpen(false);
+    setIsProfileSelectorOpen(false);
+    setCurrentView('world');
     audio.playPop();
   };
 
@@ -85,8 +129,8 @@ export default function App() {
   };
 
   // Add New Child Profile
-  const handleAddChild = (childData) => {
-    const newChild = storageService.addChild(childData);
+  const handleAddChild = async (childData) => {
+    await storageService.addChild(childData);
     refreshChildData();
     setIsProfileSelectorOpen(false);
   };
@@ -130,7 +174,7 @@ export default function App() {
       unlockedBadges
     });
 
-    // Log the activity
+    // Log the activity to database
     const durationSec = Math.max(60, Math.round((Date.now() - sessionStartTime) / 1000));
     storageService.logActivity({
       childId: activeChildId,
@@ -159,16 +203,13 @@ export default function App() {
     }
   };
 
-  // Parent Gate Success
-  const handleParentGateSuccess = () => {
-    setIsParentGateOpen(false);
-    setIsParentDashboardOpen(true);
-  };
-
-  // 1. If not authenticated, show proper Login / Register screen
+  // 1. If not authenticated, ALWAYS show Login / Register screen first
   if (!isAuthenticated) {
     return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
   }
+
+  // Determine if child is currently inside a lesson (distraction-free mode)
+  const isLessonMode = currentView === 'math' || currentView === 'alphabet' || currentView === 'stories';
 
   // 2. Child Learning Dashboard & Storybook Game World
   return (
@@ -181,25 +222,39 @@ export default function App() {
         activeChild={activeChild}
       />
 
-      {/* Main Storybook Header Navigation */}
-      <HeaderNav
-        activeChild={activeChild}
-        currentView={currentView}
-        onGoHome={() => setCurrentView('world')}
-        onOpenParentGate={() => setIsParentGateOpen(true)}
-        onOpenProfileSelector={() => setIsProfileSelectorOpen(true)}
-        onOpenBadges={() => setIsBadgesModalOpen(true)}
-        onOpenShop={() => setIsShopModalOpen(true)}
-        isFullscreen={isFullscreen}
-        onToggleFullscreen={handleToggleFullscreen}
-      />
+      {/* Main Header Navigation: HIDDEN during lessons for a distraction-free experience */}
+      {!isLessonMode && (
+        <HeaderNav
+          activeChild={activeChild}
+          currentView={currentView}
+          onGoHome={() => setCurrentView('world')}
+          onOpenProfile={() => setCurrentView('profile')}
+          onOpenBadges={() => setIsBadgesModalOpen(true)}
+          onOpenShop={() => setIsShopModalOpen(true)}
+          isFullscreen={isFullscreen}
+          onToggleFullscreen={handleToggleFullscreen}
+        />
+      )}
 
       {/* Main Dynamic View Content */}
-      <main className="flex-1">
+      <main className={`flex-1 ${isLessonMode ? 'pt-2' : ''}`}>
         {currentView === 'world' && (
           <StorybookWorldMap
             activeChild={activeChild}
             onNavigateTo={(viewKey) => setCurrentView(viewKey)}
+            onOpenBadges={() => setIsBadgesModalOpen(true)}
+            onOpenShop={() => setIsShopModalOpen(true)}
+          />
+        )}
+
+        {currentView === 'profile' && (
+          <UserProfileView
+            activeChild={activeChild}
+            currentUser={storageService.getCurrentUser()}
+            childrenList={childrenList}
+            onBack={() => setCurrentView('world')}
+            onLogout={handleLogout}
+            onOpenProfileSelector={() => setIsProfileSelectorOpen(true)}
             onOpenBadges={() => setIsBadgesModalOpen(true)}
             onOpenShop={() => setIsShopModalOpen(true)}
           />
@@ -230,53 +285,30 @@ export default function App() {
         )}
       </main>
 
-      {/* Playful Footer */}
-      <footer className="bg-paper-200 border-t-3 border-clay-dark py-4 px-6 text-center text-xs font-bold text-clay/70 mt-8">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5">
-            <span>🦊 KidEdu O'zbekiston</span>
-            <span>•</span>
-            <span>5-10 yoshli bolalar uchun quvnoq ta'lim platformasi</span>
+      {/* Playful Footer: HIDDEN during lessons. NO logout button here; logout is on profile page */}
+      {!isLessonMode && (
+        <footer className="bg-paper-200 border-t-3 border-clay-dark py-4 px-6 text-center text-xs font-bold text-clay/70 mt-8 select-none">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5">
+              <span>🦊 KidEdu O'zbekiston</span>
+              <span>•</span>
+              <span>5-10 yoshli bolalar uchun quvnoq ta'lim platformasi</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setCurrentView('profile')}
+                className="text-terracotta hover:text-terracotta-dark font-extrabold underline"
+              >
+                Mening Profilim
+              </button>
+              <span className="text-[11px] text-clay/50">v1.2</span>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsParentGateOpen(true)}
-              className="text-terracotta underline font-extrabold hover:text-terracotta-dark"
-            >
-              Ota-Ona Kabineti
-            </button>
-            <button
-              onClick={handleLogout}
-              className="text-clay/60 hover:text-terracotta font-bold text-[11px] underline"
-            >
-              Chiqish (Logout)
-            </button>
-            <span className="text-[11px] text-clay/50">v1.0 MVP</span>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      )}
 
       {/* MODALS */}
-      {/* 1. Parent Gate Security */}
-      <ParentGateModal
-        isOpen={isParentGateOpen}
-        onClose={() => setIsParentGateOpen(false)}
-        onSuccess={handleParentGateSuccess}
-        parentPin={storageService.getParentAuth()?.pin || '1234'}
-      />
-
-      {/* 2. Parent Control Dashboard */}
-      <ParentDashboard
-        isOpen={isParentDashboardOpen}
-        onClose={() => setIsParentDashboardOpen(false)}
-        childrenList={childrenList}
-        activeChildId={activeChildId}
-        onSelectChild={handleSelectChild}
-        onDataUpdated={refreshChildData}
-        onLogout={handleLogout}
-      />
-
-      {/* 3. Child Profile Switcher & Creator */}
+      {/* 1. Child Profile Switcher & Creator */}
       <ChildProfileSelector
         isOpen={isProfileSelectorOpen}
         onClose={() => setIsProfileSelectorOpen(false)}
@@ -286,14 +318,14 @@ export default function App() {
         onAddChild={handleAddChild}
       />
 
-      {/* 4. Gamification Badges Modal */}
+      {/* 2. Gamification Badges Modal */}
       <BadgesModal
         isOpen={isBadgesModalOpen}
         onClose={() => setIsBadgesModalOpen(false)}
         activeChild={activeChild}
       />
 
-      {/* 5. Mascot Costume Sticker Shop */}
+      {/* 3. Mascot Costume Sticker Shop (KidEdu Kiyimlar Do'koni) */}
       <StickerShopModal
         isOpen={isShopModalOpen}
         onClose={() => setIsShopModalOpen(false)}
