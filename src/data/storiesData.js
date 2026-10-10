@@ -13,18 +13,21 @@ export const SHORT_STORIES = [
       {
         pageNumber: 1,
         illustration: '🌲🐻🌲',
+        image: '/assets/scenes/wake_up.jpg',
         text: 'Ertalab quyosh charaqlab chiqdi. Kichkina Ayiqcha uyqudan uyg\'ondi va qorni juda ochqaganini sezdi.',
         highlightWords: ['Ayiqcha', 'quyosh', 'uyg\'ondi'],
       },
       {
         pageNumber: 2,
         illustration: '🐝🍯🌸',
+        image: '/assets/scenes/honey_gathering.jpg',
         text: 'U qalin o\'rmonga qarab yo\'l oldi. Yo\'lda u mehnatkash asalari bilan uchrashdi. "Salom, menga bir qoshiq asal berasanmi?" dedi Ayiqcha.',
         highlightWords: ['o\'rmonga', 'asalari', 'asal'],
       },
       {
         pageNumber: 3,
         illustration: '😋🍯🐻',
+        image: '/assets/scenes/happy_eating.jpg',
         text: 'Asalari unga eng mazali tilla rangli asalni tuhfa qildi. Ayiqcha rahmat aytib, juda xursand bo\'ldi.',
         highlightWords: ['mazali', 'tuhfa', 'xursand'],
       }
@@ -48,18 +51,21 @@ export const SHORT_STORIES = [
       {
         pageNumber: 1,
         illustration: '🥕🏡🐰',
+        image: '/assets/scenes/rabbit_home.jpg',
         text: 'Kuz kunlarining birida Quyonvoy o\'z tomorqasidan juda katta va chiroyli sabzi topib oldi.',
         highlightWords: ['Quyonvoy', 'tomorqa', 'sabzi'],
       },
       {
         pageNumber: 2,
         illustration: '🦔🤝🐰',
+        image: '/assets/scenes/friendship.jpg',
         text: 'U sabzini yolg\'iz o\'zi yemadi. Yo\'ldan o\'tib ketayotgan Tipratikan do\'stini mehmonga chaqirdi.',
         highlightWords: ['yolg\'iz', 'Tipratikan', 'mehmonga'],
       },
       {
         pageNumber: 3,
         illustration: '🎉🥣🥕',
+        image: '/assets/scenes/soup_party.jpg',
         text: 'Ular birgalikda mazali sabzili sho\'rva tayyorlab, hammaga ulashishdi. Do\'stlik — eng katta boylikdir!',
         highlightWords: ['birgalikda', 'sho\'rva', 'Do\'stlik'],
       }
@@ -83,18 +89,21 @@ export const SHORT_STORIES = [
       {
         pageNumber: 1,
         illustration: '✨🐦🌙',
+        image: '/assets/scenes/night_dream.jpg',
         text: 'Kichik Qushcha har kecha yulduzlarga qarab, bir kun kelib o\'sha baland ko\'k osmonga yetib borishni orzu qilardi.',
         highlightWords: ['Qushcha', 'yulduzlarga', 'osmonga'],
       },
       {
         pageNumber: 2,
         illustration: '🔭🌟🦅',
+        image: '/assets/scenes/space_prep.jpg',
         text: 'U har kuni qanotlarini mashq qildi, shamol qoidalarini va koinot xaritalarini o\'rgandi.',
         highlightWords: ['mashq', 'koinot', 'xaritalar'],
       },
       {
         pageNumber: 3,
         illustration: '🌌🚀✨',
+        image: '/assets/scenes/cosmic_flight.jpg',
         text: 'Nihoyat, u eng baland tog\' cho\'qqisiga uchib chiqib, yulduzlarning eng yorqin nurini butun yer yuziga ulashdi.',
         highlightWords: ['cho\'qqi', 'yorqin', 'yulduzlar'],
       }

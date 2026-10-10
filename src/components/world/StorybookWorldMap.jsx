@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  Sparkles, 
-  Flame, 
-  Award, 
-  ShoppingBag, 
-  BookOpen, 
-  Calculator, 
+import {
+  Sparkles,
+  Flame,
+  Award,
+  ShoppingBag,
+  BookOpen,
+  Calculator,
   CheckCircle,
   Play,
   Star
@@ -27,6 +27,7 @@ export default function StorybookWorldMap({
       title: 'Alifbo O\'rmoni',
       subtitle: '29 ta harf, tovushlar va yozish mashqlari',
       icon: '🌲🔤',
+      image: '/assets/scenes/forest_letters.jpg',
       color: '#6EA888',
       bgCard: '#EBF4EF',
       badge: 'Alifbo & Tovushlar',
@@ -97,10 +98,10 @@ export default function StorybookWorldMap({
 
   return (
     <div className="py-4 px-3 sm:px-6 max-w-7xl mx-auto space-y-6 sm:space-y-8 animate-pop-in">
-      
+
       {/* Playful Storybook World Welcome Banner */}
       <div className="relative bg-gradient-to-r from-sunny/30 via-paper-100 to-sage/30 rounded-3xl sm:rounded-5xl border-4 border-clay-dark shadow-clay p-5 sm:p-8 overflow-hidden">
-        
+
         {/* Floating Background Doodles */}
         <div className="absolute -top-4 -right-4 text-7xl opacity-20 select-none pointer-events-none animate-float">
           ☀️
@@ -110,7 +111,7 @@ export default function StorybookWorldMap({
         </div>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-          
+
           <div className="space-y-2 text-center md:text-left max-w-xl">
             <div className="inline-flex items-center gap-2 bg-sunny-soft border-2 border-clay-dark px-3 py-1 rounded-full shadow-clay-sm">
               <Sparkles size={14} className="text-sunny-dark animate-spin" />
@@ -178,7 +179,7 @@ export default function StorybookWorldMap({
                 style={{ backgroundColor: zone.bgCard }}
               >
                 {/* Wobbly decorative blob background */}
-                <div 
+                <div
                   className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full opacity-30 pointer-events-none transition-transform group-hover:scale-125"
                   style={{ backgroundColor: zone.color }}
                 />
@@ -187,10 +188,18 @@ export default function StorybookWorldMap({
                   {/* Card Header: Icon & Category Badge */}
                   <div className="flex items-center justify-between mb-4">
                     <div
-                      className="w-16 h-16 rounded-2xl border-3 border-clay-dark flex items-center justify-center text-3xl shadow-clay-sm group-hover:scale-110 group-hover:-rotate-6 transition-all"
+                      className="w-16 h-16 rounded-2xl border-3 border-clay-dark flex items-center justify-center text-3xl shadow-clay-sm group-hover:scale-110 group-hover:-rotate-6 transition-all overflow-hidden"
                       style={{ backgroundColor: zone.color }}
                     >
-                      {zone.icon}
+                      {zone.image ? (
+                        <img
+                          src={zone.image}
+                          alt={zone.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        zone.icon
+                      )}
                     </div>
 
                     <span className="text-xs font-black bg-white/90 text-clay-dark px-3 py-1 rounded-xl border-2 border-clay-dark shadow-clay-sm">

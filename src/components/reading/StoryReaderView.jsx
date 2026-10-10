@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  ArrowLeft, 
-  Volume2, 
-  ChevronRight, 
-  ChevronLeft, 
-  BookOpen, 
-  CheckCircle, 
+import {
+  ArrowLeft,
+  Volume2,
+  ChevronRight,
+  ChevronLeft,
+  BookOpen,
+  CheckCircle,
   RotateCcw,
   Sparkles
 } from 'lucide-react';
@@ -77,7 +77,7 @@ export default function StoryReaderView({
           spread: 80,
           origin: { y: 0.6 }
         });
-      } catch (e) {}
+      } catch (e) { }
     } else {
       audio.playWrong();
       audio.speakUzbek("Qaytadan o'ylab ko'ring!");
@@ -98,7 +98,7 @@ export default function StoryReaderView({
 
   return (
     <div className="py-4 px-3 sm:px-6 max-w-7xl mx-auto space-y-6 animate-pop-in">
-      
+
       {/* Top Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-paper-50 p-4 rounded-3xl border-3 border-clay-dark shadow-clay-sm">
         <div className="flex items-center gap-3">
@@ -207,15 +207,25 @@ export default function StoryReaderView({
       ) : !showQuiz ? (
         /* VIEW 2: ACTIVE STORYBOOK READING PAGE */
         <div className="max-w-3xl mx-auto space-y-6">
-          
+
           {/* Illustrated Book Page */}
           <div className="bg-[#FFFDF9] p-6 sm:p-10 rounded-3xl border-4 border-clay-dark shadow-clay-lg relative space-y-6 paper-pattern">
-            
+
             {/* Big Story Scene Illustration */}
-            <div className="bg-paper-100 p-8 rounded-2xl border-3 border-clay-dark text-center shadow-inner">
-              <div className="text-5xl sm:text-6xl tracking-widest animate-bounce-gentle">
-                {selectedStory.pages[currentPage].illustration}
-              </div>
+            <div className="bg-paper-100 p-4 sm:p-6 rounded-2xl border-3 border-clay-dark text-center shadow-inner flex justify-center items-center overflow-hidden min-h-[220px]">
+              {selectedStory.pages[currentPage].image ? (
+                <div className="flex flex-col items-center">
+                  <img
+                    src={selectedStory.pages[currentPage].image}
+                    alt={selectedStory.pages[currentPage].illustration}
+                    className="w-48 h-48 sm:w-56 sm:h-56 object-contain rounded-2xl border-3 border-clay-dark shadow-clay transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              ) : (
+                <div className="text-5xl sm:text-6xl tracking-widest animate-bounce-gentle">
+                  {selectedStory.pages[currentPage].illustration}
+                </div>
+              )}
             </div>
 
             {/* Story Text with Word Highlights */}
@@ -232,11 +242,10 @@ export default function StoryReaderView({
                         audio.playPop();
                         audio.speakUzbek(cleanWord);
                       }}
-                      className={`inline-block mx-1 cursor-pointer transition-all hover:scale-110 active:scale-95 ${
-                        isHighlight
+                      className={`inline-block mx-1 cursor-pointer transition-all hover:scale-110 active:scale-95 ${isHighlight
                           ? 'bg-sunny/40 text-terracotta-dark font-black px-1.5 py-0.5 rounded-lg border-b-2 border-terracotta'
                           : 'hover:text-terracotta'
-                      }`}
+                        }`}
                       title="So'zni eshitish uchun bosing"
                     >
                       {word}
@@ -288,7 +297,7 @@ export default function StoryReaderView({
       ) : (
         /* VIEW 3: COMPREHENSION QUIZ AT THE END OF STORY */
         <div className="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-3xl border-4 border-clay-dark shadow-clay space-y-6 animate-pop-in">
-          
+
           {!quizDone ? (
             <>
               <div className="text-center space-y-2">
@@ -305,7 +314,7 @@ export default function StoryReaderView({
                 {selectedStory.quiz.options.map((option, idx) => {
                   const isSelected = quizAnswer === idx;
                   const isCorrect = idx === selectedStory.quiz.correctIndex;
-                  
+
                   let btnStyle = 'bg-paper-50 hover:bg-paper-100 text-clay-dark';
                   if (isSelected) {
                     btnStyle = isCorrect ? 'bg-sage text-white' : 'bg-terracotta text-white';
@@ -318,13 +327,13 @@ export default function StoryReaderView({
                       className={`w-full clay-btn ${btnStyle} p-4 text-left font-black text-sm sm:text-base border-3 transition-all flex items-center justify-between`}
                     >
                       <span>{option}</span>
-                      <Volume2 
-                        size={16} 
-                        className="opacity-60" 
+                      <Volume2
+                        size={16}
+                        className="opacity-60"
                         onClick={(e) => {
                           e.stopPropagation();
                           audio.speakUzbek(option);
-                        }} 
+                        }}
                       />
                     </button>
                   );
